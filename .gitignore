@@ -2,3 +2,9 @@
 /node_modules
 Homestead.yaml
 .env
+
+public/scss/.sass-cache
+
+.DS_Store
+
+.idea
