@@ -16,7 +16,7 @@ class Payer extends User {
      */
     public function projects()
     {
-        return $this->hasMany('App\Models\Projects\Project', 'payer_id');
+        return $this->hasMany('App\Models\Project', 'payer_id');
     }
 
     /**

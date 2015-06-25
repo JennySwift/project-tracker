@@ -25,7 +25,7 @@ class Payee extends User
      */
     public function projects()
     {
-        return $this->hasMany('App\Models\Projects\Project', 'payee_id');
+        return $this->hasMany('App\Models\Project', 'payee_id');
     }
 
 }

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "5c6026b96e6fa11a641b51a6ba976f5e",
+    "hash": "18736f23bc35fb71ca7aeeb5eca5a5a3",
     "packages": [
         {
             "name": "classpreloader/classpreloader",
@@ -366,6 +366,50 @@
                 "tokenizer"
             ],
             "time": "2015-03-11 20:06:43"
+        },
+        {
+            "name": "laracasts/utilities",
+            "version": "2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/laracasts/PHP-Vars-To-Js-Transformer.git",
+                "reference": "fb96d2de843086af87b175c890d75561da66d393"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/laracasts/PHP-Vars-To-Js-Transformer/zipball/fb96d2de843086af87b175c890d75561da66d393",
+                "reference": "fb96d2de843086af87b175c890d75561da66d393",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "~5.0",
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "phpspec/phpspec": "~2.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Laracasts\\Utilities\\JavaScript\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jeffrey Way",
+                    "email": "jeffrey@laracasts.com"
+                }
+            ],
+            "description": "Transform your PHP to JavaScript",
+            "keywords": [
+                "javascript",
+                "laravel"
+            ],
+            "time": "2015-02-06 17:35:14"
         },
         {
             "name": "laravel/framework",
@@ -899,6 +943,50 @@
                 "shell"
             ],
             "time": "2015-03-26 18:43:54"
+        },
+        {
+            "name": "pusher/pusher-php-server",
+            "version": "v2.2.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/pusher/pusher-http-php.git",
+                "reference": "79d755cc5d5b02b67779e2a40782fd6e3726657d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/pusher/pusher-http-php/zipball/79d755cc5d5b02b67779e2a40782fd6e3726657d",
+                "reference": "79d755cc5d5b02b67779e2a40782fd6e3726657d",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "php": ">=5.2"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "lib/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Library for interacting with the Pusher REST API",
+            "homepage": "https://github.com/pusher/pusher-php-server",
+            "keywords": [
+                "events",
+                "php-pusher-server",
+                "publish",
+                "pusher",
+                "realtime",
+                "rest",
+                "trigger"
+            ],
+            "time": "2015-05-13 11:01:46"
         },
         {
             "name": "swiftmailer/swiftmailer",

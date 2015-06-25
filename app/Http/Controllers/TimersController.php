@@ -108,9 +108,6 @@ class TimersController extends Controller
 //            }
 //        }
 
-        //Flash
-        flash('some flash message');
-
         //Pusher
         $pusher = new Pusher(env('PUSHER_PUBLIC_KEY'), env('PUSHER_SECRET_KEY'), env('PUSHER_APP_ID'));
 
@@ -123,8 +120,22 @@ class TimersController extends Controller
 
         $pusher->trigger($channel, $event, $data);
 
-        //return response($timer->toArray(), Response::HTTP_CREATED); // = 201 HTTP Created code
-        return $this->responseCreated($timer);
+        return response($timer->toArray(), Response::HTTP_CREATED); // = 201 HTTP Created code
+
+        /**
+         * @VP:
+         * Why is this not working since I made projects a separate app?
+         * Something to do with Laravel 5.1?
+         * It's telling me:
+         *
+         * Argument 1 passed to App\Http\Controllers\Controller::responseCreated()
+         * must be an instance of App\Http\Controllers\Arrayable,
+         * instance of App\Models\Timer given
+         *
+         * But if I dd($timer->toArray()) it indicates $timer is Arrayable.
+         */
+
+//        return $this->responseCreated($timer);
     }
 
     /**
@@ -143,16 +154,13 @@ class TimersController extends Controller
         $timer->finish = Carbon::now()->toDateTimeString();
         $timer->save();
 
-        //Calculate price
-        //Note for developing-price will be zero if time is less than 30 seconds
-        // $time = $this->calculateTimerTime($timer->start, $timer->finish);
-        //$timer->calculateTotalTime();
-
+        //Price will be zero if time is less than 30 seconds
         $timer->calculatePrice();
 
-//        $timer->save();
+        return response($timer->toArray(), Response::HTTP_OK);
 
-        return $this->responseOk($timer);
+//        return $this->responseOk($timer);
+
 //        return [
 //            'projects' => $this->projectsRepository->getProjectsResponseForCurrentUser(),
 //            'project' => $this->projectsRepository->getProject($project->id)
