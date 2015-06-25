@@ -1,0 +1,16 @@
+#exercise-popup {
+	h3 {
+		&:first-child {
+			margin-top: 0;
+			margin-bottom: 25px;
+		}
+	}
+	.flex {
+		display: flex;
+		justify-content: space-around;
+		flex-wrap: wrap;
+	}
+	input {
+		background: #FEE6BE;
+	}
+}

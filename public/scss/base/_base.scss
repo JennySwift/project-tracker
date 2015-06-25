@@ -1,0 +1,141 @@
+/*==============================global==============================*/
+
+html, body {
+    max-width: 100%;
+    overflow-x: hidden;
+    background: #fff;
+}
+
+body {
+	padding-top: 63px;
+    color: #777;
+	// padding-bottom: 50px;
+	@media (max-width: 600px) {
+		padding-top: 42px;
+	}
+}
+
+//for flexbox sticky footer (works great)
+html, body {
+	height: 100%;
+}
+body {
+	
+	// display: flex;
+	// flex-direction: column;
+	.container {
+		padding-bottom: 60px;
+		min-height: 100%;
+		// flex-grow: 1;
+	}
+	footer {
+		padding: 11px;
+		background: rgba(119, 119, 119, 0.12);
+		height: 60px;
+		position: relative;
+		margin-top: -60px;
+
+	}
+}	
+
+h1,h2,h3,h4,h5 {
+	text-align: center;
+}
+
+p {
+	// width: 238px;
+	padding: 0 20px;
+	text-align: center;
+}
+
+select {
+	// font-size: 22px;
+	padding-top: 4px;
+    padding-right: 15px;
+}
+
+button {
+	background: #fff;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
+	color: #555;
+	font-size: 14px;
+	padding: 6px 12px;
+	&:active {
+		box-shadow: 0 3px 5px rgba(0, 0, 0, 0.125) inset;
+		border: 1px solid black;
+	}
+	&:focus {
+		outline: thin dotted;
+		outline-offset: -2px;
+	}
+	&:hover, &:focus, &:active {
+		background-color: #e6e6e6;
+		border-color: #adadad;
+		color: #333;
+	}
+}
+
+//input {
+//	padding: 0;
+//	margin: 0;
+//	border: 0;
+//	overflow: scroll;
+//	background: transparent;
+//	text-align: center;
+//}
+
+input {
+  // display: block;
+  // width: 100%;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
+  color: #555;
+  font-size: 14px;
+  height: 34px;
+  line-height: 1.42857;
+  padding: 6px 12px;
+  &:focus {
+    border-color: #66afe9;
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6);
+  }
+}
+
+input[type="checkbox"] {
+	// height: 34px;
+	// width: 34px;
+	margin: 0;
+}
+
+
+
+th, table {
+	td {
+		vertical-align: middle !important;
+	}
+	text-align: center;
+	@media (max-width: 600px) {
+		font-size: 7px;
+	}
+}
+
+
+caption {
+	padding: 8px;
+	font-weight: bold;
+}
+
+li {
+	list-style-type: none;
+}
+
+h1 {
+	@media (max-width: 600px) {
+		font-size: 20px;
+		margin: 2px 2px;
+	}
+}
+

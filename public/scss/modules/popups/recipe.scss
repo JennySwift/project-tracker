@@ -1,0 +1,61 @@
+#recipe-popup {
+	// display: flex;
+	// flex-direction: column;
+	// display: -webkit-flex;
+	// flex-direction: -webkit-column;
+	button, ul {
+		width: 100%;
+	}
+	> div {
+		margin-bottom: 100px;
+		&:last-child {
+			margin-bottom: 10px;
+		}
+	}
+
+	#steps-table {
+		td {
+			text-align: left;
+			&:nth-child(1) {
+				padding: 0px 20px;
+				position: relative;
+				div {
+					position: absolute;
+					top: 0;
+					bottom: 0;
+					left: 0;
+					right: 0;
+					input {
+						margin: 0;
+						height: 30px;
+						width: 30px;
+					}
+				}
+			}
+		}
+	}
+
+	.flex {
+		display: flex;
+		// display: -webkit-flex;
+		flex-direction: column;
+		// flex-direction: -webkit-column;
+		align-items: center;
+		// align-items: -webkit-center;
+	}
+	.transition {
+	  opacity: 1;
+	  height: 400px;
+	}
+
+	.transition.ng-hide-add.ng-hide-add-active,
+	.transition.ng-hide-remove.ng-hide-remove-active {
+	  -webkit-transition: all linear .5s;
+	  transition: all linear .5s;
+	}
+
+	.transition.ng-hide {
+	  opacity: 0;
+	  height: 0px;
+	}
+}

@@ -1,0 +1,15 @@
+.selected {
+	background: $select_blue;
+}
+
+@media (max-width: 600px) {
+	.desktop {
+		display: none;
+	}
+}
+
+@media (min-width: 601px) {
+	.iphone {
+		display: none;
+	}
+}

@@ -1,0 +1,24 @@
+@media (max-width: 480px) {
+	.my-input-group {
+		input {
+			padding-left: 0;
+			padding-right: 0;
+			// max-width: 10px;
+		}
+		button {
+			padding-left: 0;
+			padding-right: 0;
+		}
+	}
+	.my-btn-group {
+		button {
+			padding-left: 0;
+			padding-right: 0;
+		}
+	}
+	#today {
+		padding-left: 0;
+		padding-right: 0;
+		max-width: 40px;
+	}
+}
