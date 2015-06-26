@@ -85,7 +85,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
         $owed = number_format($owed, 2);
 
-        return $owed;
+        return (float) $owed;
     }
 
     /**
@@ -113,7 +113,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
         $owed = number_format($owed, 2);
 
-        return $owed;
+        return (float) $owed;
     }
 }
 

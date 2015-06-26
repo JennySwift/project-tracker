@@ -86,7 +86,7 @@ class Project extends Model {
         $timer_ids = Timer::where('project_id', $this->id)->lists('id');
 
         //Get the sum of all the timers that belong to the project
-        $price = Timer::whereIn('id', $timer_ids)->sum('price');
+        $price = (float) Timer::whereIn('id', $timer_ids)->sum('price');
 
         /**
          * @VP:

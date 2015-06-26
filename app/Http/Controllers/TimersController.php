@@ -7,10 +7,14 @@ use App\Models\Payer;
 use App\Models\Project;
 use App\Models\Timer;
 use App\Repositories\ProjectsRepository;
+use App\Transformers\Timer\StopProjectTimerTransformer;
 use Auth;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use League\Fractal\Manager;
+use League\Fractal\Resource\Item;
+use League\Fractal\Serializer\ArraySerializer;
 use Pusher;
 
 /**
@@ -147,18 +151,41 @@ class TimersController extends Controller
      */
     public function stopProjectTimer(Request $request)
     {
+//        $project = Project::find($request->get('project_id'));
+//        $last_timer_id = Timer::where('project_id', $project->id)->max('id');
+//        $timer = Timer::find($last_timer_id);
+//
+//        $timer->finish = Carbon::now()->toDateTimeString();
+//        $timer->save();
+//
+//        //Price will be zero if time is less than 30 seconds
+//        $timer->calculatePrice();
+//
+//        return response($timer->toArray(), Response::HTTP_OK);
+
+        // Fetch the required data
         $project = Project::find($request->get('project_id'));
         $last_timer_id = Timer::where('project_id', $project->id)->max('id');
         $timer = Timer::find($last_timer_id);
 
+        // Update the data
         $timer->finish = Carbon::now()->toDateTimeString();
         $timer->save();
 
-        //Price will be zero if time is less than 30 seconds
         $timer->calculatePrice();
 
-        return response($timer->toArray(), Response::HTTP_OK);
+        // Create the fractal manager
+        // @TODO: You could extract the next two lines to a ServiceProvider
+        $fractal = new Manager();
+        $fractal->setSerializer(new ArraySerializer);
 
+        // Create an item with fractal
+        $resource = new Item($timer, new StopProjectTimerTransformer);
+        // $this->createItem(Model, transofrmer)
+        // $this->createCollection(Model, transofrmer)
+
+        // Send a response
+        return response()->json($fractal->createData($resource)->toArray());
 //        return $this->responseOk($timer);
 
 //        return [
