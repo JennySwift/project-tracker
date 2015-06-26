@@ -59,6 +59,8 @@ class TimersController extends Controller
          * ->with(['projects' => function($query) use ($project_ids){
          *     return $query->whereIn('id', $project_ids);
          * }])
+         * PUT /timers/{timer}
+         * POST /update/timers/mar
          */
         Timer::whereIn('project_id', $project_ids)
             ->where('paid', 0)
