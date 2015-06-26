@@ -3,8 +3,12 @@
 namespace App\Exceptions;
 
 use Exception;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Redirect;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Symfony\Component\HttpKernel\Exception\TooManyRequestsHttpException;
 
 class Handler extends ExceptionHandler
 {
@@ -39,6 +43,40 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $e)
     {
+        // Throttle package exception handler
+        if ($e instanceof TooManyRequestsHttpException) {
+            return Redirect::back()
+                ->withInput($request->only('email', 'remember'))
+                ->withErrors([
+                    'email' => 'Too many failed login attempts!',
+                ]);
+        }
+
+        // Model not found exception handler (app-wide)
+        if ($e instanceof ModelNotFoundException) {
+
+            // Build a "fake" instance of the model which was not found
+            // and fetch the shortname of the class
+            // Ex.: If we have a App\Models\Projects\Project model
+            // Then if would return Project
+            $model = (new \ReflectionClass($e->getModel()))->getShortName();
+
+            // Return the 404 response :)
+            return response([
+                'error' => "{$model} not found.",
+                'status' => Response::HTTP_NOT_FOUND
+            ], Response::HTTP_NOT_FOUND);
+        }
+
         return parent::render($request, $e);
     }
 }
+
+
+
+
+
+
+
+
+
