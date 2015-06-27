@@ -45,6 +45,13 @@ var app = angular.module('projects');
             }
         });
 
+        channel.bind('markAsPaid', function(data) {
+            if ($scope.me.id === data.payer_id) {
+                $scope.flash_messages.push(data.message);
+                $scope.$apply();
+            }
+        });
+
         /**
          * watches
          */

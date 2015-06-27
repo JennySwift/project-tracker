@@ -59,6 +59,16 @@ class TimersController extends Controller
                 'time_of_payment' => Carbon::now()
             ]);
 
+        //Pusher
+        $pusher = new Pusher(env('PUSHER_PUBLIC_KEY'), env('PUSHER_SECRET_KEY'), env('PUSHER_APP_ID'));
+
+        $data = [
+            'payer_id' => $payer->id,
+            'message' => Auth::user()->name . ' has marked all timers as paid.'
+        ];
+
+        $pusher->trigger('timerChannel', 'markAsPaid', $data);
+
         // @TODO Return collection of timers that have been modified
     }
 
