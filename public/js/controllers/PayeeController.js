@@ -149,7 +149,7 @@ var app = angular.module('projects');
                 var $payer_index = _.indexOf($scope.payers, $payer);
 
                 //Update the amount owed
-                $scope.payers[$payer_index].owed_to_user = response.data.payer.owed;
+                $scope.payers[$payer_index].formatted_owed_to_user = response.data.payer.owed;
 
                 //Stop the JS timer
                 $interval.cancel($scope.counter);
