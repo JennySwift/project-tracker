@@ -205,6 +205,7 @@ var app = angular.module('projects');
                             return false;
                         }
                         $scope.projects = _.without($scope.projects, $project);
+                        $scope.flash_messages.push('Project ' + $project.description + ' deleted.');
                     })
                     .catch(function (response) {
                         $scope.flash_messages.push(response.data.error);
@@ -215,9 +216,8 @@ var app = angular.module('projects');
         $scope.deleteTimer = function ($timer) {
             if (confirm("Are you sure you want to delete this timer?")) {
                 ProjectsFactory.deleteTimer($timer).then(function (response) {
-                    //$scope.projects = response.data;
-                    //$scope.projects[$context] = _.without($scope.projects[$context], $project);
                     $scope.selected.project.timers = _.without($scope.selected.project.timers, $timer);
+                    $scope.flash_messages.push('Timer deleted.');
                 });
             }
         };
