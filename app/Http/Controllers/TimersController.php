@@ -68,7 +68,7 @@ class TimersController extends Controller
             'message' => Auth::user()->name . ' has marked all timers as paid.'
         ];
 
-        $pusher->trigger('timerChannel', 'markAsPaid', $data);
+        $pusher->trigger('channel', 'markAsPaid', $data);
 
         // @TODO Return collection of timers that have been modified
     }
@@ -116,7 +116,7 @@ class TimersController extends Controller
             'message' => Auth::user()->name . ' has started a new timer on the project ' . $project->description
         ];
 
-        $pusher->trigger('timerChannel', 'startTimer', $data);
+        $pusher->trigger('channel', 'startTimer', $data);
 
         return $this->responseCreated($timer);
     }
@@ -149,7 +149,7 @@ class TimersController extends Controller
             'message' => Auth::user()->name . ' has stopped the timer on the project ' . $project->description . '.'
         ];
 
-        $pusher->trigger('timerChannel', 'stopTimer', $data);
+        $pusher->trigger('channel', 'stopTimer', $data);
 
         // Create the fractal manager
         // @TODO: You could extract the next two lines to a ServiceProvider

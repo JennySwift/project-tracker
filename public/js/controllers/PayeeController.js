@@ -70,8 +70,12 @@ var app = angular.module('projects');
             {
                 return false;
             }
-            ProjectsFactory.insertProject($scope.new_project.email, $scope.new_project.description, $scope.new_project.rate).then(function (response) {
-                $scope.projects.push(response.data);
+            ProjectsFactory.insertProject($scope.new_project.email, $scope.new_project.description, $scope.new_project.rate)
+                .then(function (response) {
+                    $scope.projects.push(response.data)
+                .catch(function (response) {
+                    console.log(response);
+                });
             });
         };
 

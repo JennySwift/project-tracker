@@ -29,7 +29,7 @@ var app = angular.module('projects');
 
         var pusher = new Pusher($scope.pusher_public_key);
 
-        var channel = pusher.subscribe('timerChannel');
+        var channel = pusher.subscribe('channel');
 
         channel.bind('startTimer', function(data) {
             if ($scope.me.id === data.payer_id) {
@@ -53,6 +53,13 @@ var app = angular.module('projects');
                 var $index = _.indexOf($scope.payees, _.findWhere($scope.payees, {id: data.payee_id}));
                 $scope.payees[$index].formatted_owed_by_user = "0.00";
 
+                $scope.$apply();
+            }
+        });
+
+        channel.bind('insertProject', function(data) {
+            if ($scope.me.id === data.payer_id) {
+                $scope.flash_messages.push(data.message);
                 $scope.$apply();
             }
         });

@@ -62,22 +62,12 @@ class ProjectsController extends Controller
      */
     public function store(CreateProjectRequest $request)
     {
-
-//        $payer_email = $request->get('payer_email');
-//        $description = $request->get('description');
-//        $rate = $request->get('rate');
-
-        // @TODO Remember to update your Angular app to add the new project to the array of projects
         // @TODO Fix the error handling in Angular now that you have validation (check for status code 422)
         return $this->projectsRepository->createProject(
             $request->get('payer_email'),
             $request->get('description'),
             $request->get('rate')
         );
-
-//        $payee = Payee::find(Auth::user()->id);
-//
-//        return $payee->projects;
     }
 
     /**
