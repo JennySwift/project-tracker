@@ -52,7 +52,7 @@ var app = angular.module('projects');
                 //Find the payee and update owed to 0.00
                 var $index = _.indexOf($scope.payees, _.findWhere($scope.payees, {id: data.payee_id}));
                 $scope.payees[$index].formatted_owed_by_user = "0.00";
-                
+
                 $scope.$apply();
             }
         });

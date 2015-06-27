@@ -114,16 +114,15 @@ var app = angular.module('projects');
          * When timer is stopped, info about the timer, project,
          * and payer is returned in the response using a transformer.
          *
-         * Update:
-         * Update the timer in the timers table.
-         * Update the amount owed.
+         * Update the following:
+         * The timer in the timers table.
+         * The amount owed.
          * On both main page and in the popup, update the project time and project price.
          */
         $scope.stopProjectTimer = function () {
             ProjectsFactory.stopProjectTimer($scope.selected.project.id).then(function (response) {
                 //Find the timer in the JS array and update it
-                var $timer = _.findWhere($scope.selected.project.timers, {id: response.data.id});
-                var $index = _.indexOf($scope.selected.project.timers, $timer);
+                var $index = _.indexOf($scope.selected.project.timers, _.findWhere($scope.selected.project.timers, {id: response.data.id}));
                 $scope.selected.project.timers[$index].formatted_finish = response.data.finish;
                 $scope.selected.project.timers[$index].formatted_time = response.data.time;
                 $scope.selected.project.timers[$index].price = response.data.price;
@@ -135,6 +134,8 @@ var app = angular.module('projects');
                 $scope.selected.project.total_time_formatted = response.data.project.time;
 
                 //Find the project on the main page
+                //I suppose ideally the project time and price should somehow update
+                //on the main page automatically when it updates in the popup.
                 var $project = _.findWhere($scope.projects, {id: $scope.selected.project.id});
                 var $index = _.indexOf($scope.projects, $project);
 
@@ -145,8 +146,7 @@ var app = angular.module('projects');
                 $scope.projects[$index].total_time_formatted = $scope.selected.project.total_time_formatted;
 
                 //Find the payer
-                var $payer = _.findWhere($scope.payers, {id: response.data.payer.id});
-                var $payer_index = _.indexOf($scope.payers, $payer);
+                var $payer_index = _.indexOf($scope.payers, _.findWhere($scope.payers, {id: response.data.payer.id}));
 
                 //Update the amount owed
                 $scope.payers[$payer_index].formatted_owed_to_user = response.data.payer.owed;
