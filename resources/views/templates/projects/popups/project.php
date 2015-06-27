@@ -33,7 +33,9 @@
 
         <h1>Timers</h1>
 
-        <table class="table table-bordered">
+        <h3 ng-show="selected.project.timers.length === 0">There are no timers for this project.</h3>
+
+        <table ng-show="selected.project.timers.length > 0" class="table table-bordered">
             <tr>
                 <th>Start</th>
                 <th>Finish</th>
