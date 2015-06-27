@@ -7,6 +7,7 @@ use App\Models\Payer;
 use App\Models\Project;
 use App\Models\Timer;
 use App\Repositories\ProjectsRepository;
+use App\Transformers\Timer\MarkAsPaidTransformer;
 use App\Transformers\Timer\StopProjectTimerTransformer;
 use Auth;
 use Carbon\Carbon;
@@ -38,7 +39,7 @@ class TimersController extends Controller
      * Mark all timers that belong to the user (payee),
      * and are with a certain payer, as paid
      *
-     * WARNING: Be careful, method not Restful!
+     * WARNING: Be careful, method not Restful! (Should be PUT /timers/{timer})
      *
      * @param Request $request
      */
@@ -51,17 +52,6 @@ class TimersController extends Controller
             ->where('payer_id', $payer->id)
             ->lists('id');
 
-        /**
-         * @VP:
-         * Is this vulnerable to mass assignment? How would I fix that?
-         *
-         * You could filter the timers by projects using the relationship
-         * ->with(['projects' => function($query) use ($project_ids){
-         *     return $query->whereIn('id', $project_ids);
-         * }])
-         * PUT /timers/{timer}
-         * POST /update/timers/mar
-         */
         Timer::whereIn('project_id', $project_ids)
             ->where('paid', 0)
             ->update([
@@ -70,13 +60,6 @@ class TimersController extends Controller
             ]);
 
         // @TODO Return collection of timers that have been modified
-
-        /**
-         * Things that need to be updated on the page:
-         * Timers needs to be marked as paid.
-         * Timers need to display date of payment.
-         * Amount payer owes needs to change to 0.00.
-         */
     }
 
     /**
@@ -126,22 +109,9 @@ class TimersController extends Controller
 
         $pusher->trigger($channel, $event, $data);
 
-        return response($timer->toArray(), Response::HTTP_CREATED); // = 201 HTTP Created code
+//        return response($timer->toArray(), Response::HTTP_CREATED); // = 201 HTTP Created code
 
-        /**
-         * @VP:
-         * Why is this not working since I made projects a separate app?
-         * Something to do with Laravel 5.1?
-         * It's telling me:
-         *
-         * Argument 1 passed to App\Http\Controllers\Controller::responseCreated()
-         * must be an instance of App\Http\Controllers\Arrayable,
-         * instance of App\Models\Timer given
-         *
-         * But if I dd($timer->toArray()) it indicates $timer is Arrayable.
-         */
-
-//        return $this->responseCreated($timer);
+        return $this->responseCreated($timer);
     }
 
     /**
@@ -149,28 +119,16 @@ class TimersController extends Controller
      * Return all the projects,
      * as well as the project that is currently displaying in the project popup
      * @param Request $request
-     * @return array
+     * @return mixed
      */
     public function stopProjectTimer(Request $request)
     {
-//        $project = Project::find($request->get('project_id'));
-//        $last_timer_id = Timer::where('project_id', $project->id)->max('id');
-//        $timer = Timer::find($last_timer_id);
-//
-//        $timer->finish = Carbon::now()->toDateTimeString();
-//        $timer->save();
-//
-//        //Price will be zero if time is less than 30 seconds
-//        $timer->calculatePrice();
-//
-//        return response($timer->toArray(), Response::HTTP_OK);
-
         // Fetch the required data
         $project = Project::find($request->get('project_id'));
         $last_timer_id = Timer::where('project_id', $project->id)->max('id');
         $timer = Timer::find($last_timer_id);
 
-        // Update the data
+        // Update the data (Price will be zero if time is less than 30 seconds)
         $timer->finish = Carbon::now()->toDateTimeString();
         $timer->save();
 
@@ -188,12 +146,9 @@ class TimersController extends Controller
 
         // Send a response
         return response()->json($fractal->createData($resource)->toArray());
-//        return $this->responseOk($timer);
 
-//        return [
-//            'projects' => $this->projectsRepository->getProjectsResponseForCurrentUser(),
-//            'project' => $this->projectsRepository->getProject($project->id)
-//        ];
+//        return $this->responseOk($timer);
+//        return response($timer->toArray(), Response::HTTP_OK);
     }
 
 //    /**

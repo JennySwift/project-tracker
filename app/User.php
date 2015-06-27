@@ -32,7 +32,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     /**
      * @var array
      */
-    protected $appends = ['gravatar', 'owed_to_user', 'owed_by_user'];
+    protected $appends = ['gravatar', 'owed_to_user', 'owed_by_user', 'formatted_owed_to_user', 'formatted_owed_by_user'];
 
     /**
      * The attributes that are mass assignable.
@@ -85,7 +85,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
         $owed = number_format($owed, 2);
 
-        return (float) $owed;
+        return $owed;
     }
 
     /**
@@ -111,9 +111,17 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         $owed = Timer::whereIn('id', $timers_with_payee)
             ->sum('price');
 
-        $owed = number_format($owed, 2);
-
         return (float) $owed;
+    }
+
+    public function getFormattedOwedByUserAttribute()
+    {
+        return number_format($this->owed_by_user, 2);
+    }
+
+    public function getFormattedOwedToUserAttribute()
+    {
+        return number_format($this->owed_to_user, 2);
     }
 }
 

@@ -21,14 +21,16 @@ class StopProjectTimerTransformer extends TransformerAbstract
             'id' => (int) $timer->id,
             'start' => $timer->formattedStart,
             'finish' => $timer->formattedFinish,
+            'price' => $timer->calculatePrice(),
+            'time' => $timer->formattedTime,
             'project' => [
                 'id' => $timer->project->id,
                 'price' => $timer->project->price,
-                'total-time' => $timer->project->totalTimeFormatted
+                'time' => $timer->project->totalTimeFormatted
             ],
             'payer' => [
                 'id' => $timer->project->payer->id,
-                'owed' => $timer->project->payer->owedByUser
+                'owed' => $timer->project->payer->owedToUser
             ]
         ];
     }

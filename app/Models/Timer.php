@@ -21,7 +21,7 @@ class Timer extends Model {
      * @var array
      * @TODO The front end should take care of formatting anything
      */
-    protected $appends = ['path', 'time', 'totalTime', 'formatted_hours', 'formatted_minutes', 'formatted_seconds', 'formatted_paid_at', 'formatted_start', 'formatted_finish'];
+    protected $appends = ['path', 'time', 'totalTime', 'formatted_time', 'formatted_hours', 'formatted_minutes', 'formatted_seconds', 'formatted_paid_at', 'formatted_start', 'formatted_finish'];
 
     /**
      * @var bool
@@ -127,6 +127,19 @@ class Timer extends Model {
         }
 
         return $this->finish->diff($this->start);
+    }
+
+    public function getFormattedTimeAttribute()
+    {
+        if (!$this->time) {
+            return '';
+        }
+
+        return [
+            'hours' => $this->formattedHours,
+            'minutes' => $this->formattedMinutes,
+            'seconds' => $this->formattedSeconds
+        ];
     }
 
     /**
@@ -257,6 +270,7 @@ class Timer extends Model {
          */
 
         $this->save();
+        return $this->price;
     }
 
 }

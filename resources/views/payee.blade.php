@@ -60,7 +60,7 @@
                 <tr ng-repeat="payer in payers">
                     <td><img ng-src="[[payer.gravatar]]" alt=""></td>
                     <td>[[payer.name]]</td>
-                    <td>[[payer.owed_to_user]]</td>
+                    <td>[[payer.formatted_owed_to_user]]</td>
                     <td><button ng-click="markAsPaid(payer)" class="btn btn-xs">paid</button></td>
                     <td><button ng-click="removePayer(payer)" class="btn btn-xs btn-danger">delete</button></td>
                 </tr>

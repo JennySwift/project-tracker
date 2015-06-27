@@ -47,7 +47,7 @@
                 <td>[[timer.formatted_start]]</td>
                 <td>[[timer.formatted_finish]]</td>
                 <td>
-                    <span ng-show="timer.formatted_hours">[[timer.formatted_hours]]:[[timer.formatted_minutes]]:[[timer.formatted_seconds]]</span>
+                    <span ng-show="timer.formatted_time">[[timer.formatted_time.hours]]:[[timer.formatted_time.minutes]]:[[timer.formatted_time.seconds]]</span>
                 </td>
                 <td>[[timer.price]]</td>
                 <td>

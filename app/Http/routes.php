@@ -3,6 +3,7 @@
 use App\Models\Payer;
 use App\Models\Project;
 use App\Models\Timer;
+use App\User;
 
 /**
  * Views
@@ -22,7 +23,9 @@ use App\Models\Timer;
 
 Route::get('/test', function()
 {
-    return Project::find(2);
+    $user = User::first();
+    //dd($user);
+    return $user;
 });
 
 //Projects
