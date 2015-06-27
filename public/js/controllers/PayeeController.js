@@ -157,40 +157,6 @@ var app = angular.module('projects');
             });
         };
 
-
-        ///**
-        // * When timer is stopped, the timer is returned in the response update:
-        // * Update the timer in the timers table.
-        // * Update the amount owed.
-        // * On both main page and in the popup, update the project time and project price.
-        // */
-        //$scope.stopProjectTimer = function () {
-        //    ProjectsFactory.stopProjectTimer($scope.selected.project.id).then(function (response) {
-        //        //$scope.projects = response.data.projects;
-        //        //$scope.selected.project = response.data.project;
-        //
-        //        //Find the timer in the JS array and update it
-        //        var $timer = _.findWhere($scope.selected.project.timers, {id: response.data.id});
-        //        var $index = _.indexOf($scope.selected.project.timers, $timer);
-        //        $scope.selected.project.timers[$index] = response.data;
-        //
-        //        //Add the timer price to the project price in the popup
-        //        $scope.selected.project.price = parseFloat($scope.selected.project.price);
-        //        $scope.selected.project.price+= parseFloat(response.data.price);
-        //
-        //        //Add the timer price to the project price on the main page
-        //        var $project = _.findWhere($scope.projects, {id: $scope.selected.project.id});
-        //        var $index = _.indexOf($scope.projects, $project);
-        //        $scope.projects[$index].price = $scope.selected.project.price;
-        //        $scope.projects[$index].formatted_price = parseFloat($scope.projects[$index].price).toFixed(2);
-        //
-        //        //Todo: update amount owed, as well as project time in both popup and on main page
-        //
-        //        $interval.cancel($scope.counter);
-        //        $scope.project_popup.is_timing = false;
-        //    });
-        //};
-
         /**
          * After the successful response, in the JS:
          * Update amount owed to "0.00".
