@@ -59,7 +59,14 @@ var app = angular.module('projects');
 
         channel.bind('insertProject', function(data) {
             if ($scope.me.id === data.payer_id) {
-                $scope.flash_messages.push(data.message);
+                if (confirm(data.message)) {
+                    $scope.confirmNewProject(data.project);
+                    $scope.flash_messages.push('Project confirmed!');
+                }
+                else {
+                    $scope.declineNewProject(data.project);
+                    $scope.flash_messages.push('Project declined!');
+                }
                 $scope.$apply();
             }
         });
@@ -94,6 +101,18 @@ var app = angular.module('projects');
         /**
          * update
          */
+
+        $scope.confirmNewProject = function ($project) {
+            ProjectsFactory.confirmNewProject($project).then(function (response) {
+
+            });
+        };
+
+        $scope.declineNewProject = function ($project) {
+            ProjectsFactory.declineNewProject($project).then(function (response) {
+
+            });
+        };
 
         /**
          * delete

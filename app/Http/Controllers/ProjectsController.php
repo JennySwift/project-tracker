@@ -10,6 +10,8 @@ use Auth;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use JavaScript;
+use Debugbar;
+use Pusher;
 
 /**
  * Class ProjectsController
@@ -68,6 +70,50 @@ class ProjectsController extends Controller
             $request->get('description'),
             $request->get('rate')
         );
+    }
+
+    /**
+     * Update the project
+     * @param $id
+     * @return mixed
+     */
+    public function update($id)
+    {
+        $project = Project::find($id);
+        $project->confirmed = 1;
+        $project->save();
+        Debugbar::info('something');
+        //Pusher
+        $pusher = new Pusher(env('PUSHER_PUBLIC_KEY'), env('PUSHER_SECRET_KEY'), env('PUSHER_APP_ID'));
+
+        $data = [
+            'payee_id' => $project->payee->id,
+            'message' => 'Project confirmed!'
+        ];
+
+        $pusher->trigger('channel', 'confirmProject', $data);
+
+        return $project;
+    }
+
+    /**
+     * Todo: This could do with some work I guess.
+     * @param Request $request
+     */
+    public function declineNewProject(Request $request)
+    {
+//        Debugbar::info('project', $request->get('project')['id']);
+        $project = Project::find($request->get('project')['id']);
+
+        //Pusher
+        $pusher = new Pusher(env('PUSHER_PUBLIC_KEY'), env('PUSHER_SECRET_KEY'), env('PUSHER_APP_ID'));
+
+        $data = [
+            'payee_id' => $project->payee->id,
+            'message' => 'Project rejected!'
+        ];
+
+        $pusher->trigger('channel', 'declineProject', $data);
     }
 
     /**

@@ -102,6 +102,7 @@ class ProjectsRepository
         $data = [
             'payee_id' => Auth::user()->id,
             'payer_id' => $payer->id,
+            'project' => $project,
             'message' => Auth::user()->name . ' would like to start a new project with you, with the description \'' . $project->description . ',\' and at $' . $rate . '/hour. Is this ok?'
         ];
 

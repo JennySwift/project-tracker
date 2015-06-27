@@ -6,6 +6,7 @@ use App\Models\Payee;
 use App\Models\Payer;
 use Carbon\Carbon;
 use JavaScript;
+use Debugbar;
 use Auth;
 
 use Illuminate\Http\Request;
@@ -32,11 +33,16 @@ class PagesController extends Controller {
      */
     public function payee()
     {
+        //I got an error with the package if
+        //I didn't put $pusher_public_key into a variable first
+        $pusher_public_key = env('PUSHER_PUBLIC_KEY');
         $payee = Payee::find(Auth::user()->id);
 
         JavaScript::put([
             'payee_projects' => $payee->projects->toArray(),
             'payers' => $payee->payers->toArray(),
+            'me' => Auth::user(),
+            'pusher_public_key' => $pusher_public_key
         ]);
 
         return view('payee');
@@ -48,6 +54,7 @@ class PagesController extends Controller {
      */
     public function payer()
     {
+        Debugbar::info('hi');
         //I got an error with the package if
         //I didn't put $pusher_public_key into a variable first
         $pusher_public_key = env('PUSHER_PUBLIC_KEY');

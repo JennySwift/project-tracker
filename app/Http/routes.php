@@ -90,7 +90,7 @@ Route::controllers([
  * Resources
  */
 
-Route::resource('projects', 'ProjectsController', ['only' => ['show', 'store', 'destroy']]);
+Route::resource('projects', 'ProjectsController', ['only' => ['show', 'store', 'update', 'destroy']]);
 Route::resource('payee', 'PayeeController', ['only' => ['store', 'destroy']]);
 Route::resource('payer', 'PayerController', ['only' => ['store', 'destroy']]);
 Route::resource('timers', 'TimersController', ['only' => ['destroy']]);
@@ -111,6 +111,7 @@ Route::post('insert/payer', 'PayeeController@addPayer');
 Route::post('delete/payer', 'PayeeController@removePayer');
 Route::post('update/markAsPaid', 'TimersController@markAsPaid');
 Route::post('update/stopProjectTimer', 'TimersController@stopProjectTimer');
+Route::post('update/declineNewProject', 'ProjectsController@declineNewProject');
 
 
 

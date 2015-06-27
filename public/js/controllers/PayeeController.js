@@ -8,7 +8,7 @@ var app = angular.module('projects');
          */
 
         $scope.projects = payee_projects;
-
+        $scope.me = me;
         $scope.payers = payers;
         $scope.new_project = {};
         $scope.show = {
@@ -19,6 +19,31 @@ var app = angular.module('projects');
         };
         $scope.selected = {};
         $scope.flash_messages = [];
+
+        /**
+         * Pusher
+         * @type {string}
+         */
+
+        $scope.pusher_public_key = pusher_public_key;
+
+        var pusher = new Pusher($scope.pusher_public_key);
+
+        var channel = pusher.subscribe('channel');
+
+        channel.bind('confirmProject', function(data) {
+            if ($scope.me.id === data.payee_id) {
+                $scope.flash_messages.push(data.message);
+                $scope.$apply();
+            }
+        });
+
+        channel.bind('declineProject', function(data) {
+            if ($scope.me.id === data.payee_id) {
+                $scope.flash_messages.push(data.message);
+                $scope.$apply();
+            }
+        });
 
         /**
          * watches
@@ -73,10 +98,10 @@ var app = angular.module('projects');
             ProjectsFactory.insertProject($scope.new_project.email, $scope.new_project.description, $scope.new_project.rate)
                 .then(function (response) {
                     $scope.projects.push(response.data)
+                })
                 .catch(function (response) {
                     console.log(response);
                 });
-            });
         };
 
         $scope.startProjectTimer = function () {

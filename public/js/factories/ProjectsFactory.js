@@ -63,6 +63,24 @@ app.factory('ProjectsFactory', function ($http) {
 
             return $http.post($url, $data);
         },
+        confirmNewProject: function ($project) {
+            var $url = $project.path;
+
+            return $http.put($url);
+        },
+        /**
+         * Todo: This could do with some work. Just doing a post request for now.
+         * @param $project
+         * @returns {*}
+         */
+        declineNewProject: function ($project) {
+            var $url = 'update/declineNewProject';
+            var $data = {
+                project: $project
+            };
+
+            return $http.post($url, $data);
+        },
 
         /**
          * delete
