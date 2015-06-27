@@ -228,18 +228,22 @@ var app = angular.module('projects');
         };
 
         $scope.deleteProject = function ($project) {
-            ProjectsFactory.deleteProject($project).then(function (response) {
-                //$scope.projects = response.data;
-                $scope.projects = _.without($scope.projects, $project);
-            });
+            if (confirm("Are you sure you want to delete this project?")) {
+                ProjectsFactory.deleteProject($project).then(function (response) {
+                    //$scope.projects = response.data;
+                    $scope.projects = _.without($scope.projects, $project);
+                });
+            }
         };
 
         $scope.deleteTimer = function ($timer) {
-            ProjectsFactory.deleteTimer($timer).then(function (response) {
-                //$scope.projects = response.data;
-                //$scope.projects[$context] = _.without($scope.projects[$context], $project);
-                $scope.selected.project.timers = _.without($scope.selected.project.timers, $timer);
-            });
+            if (confirm("Are you sure you want to delete this timer?")) {
+                ProjectsFactory.deleteTimer($timer).then(function (response) {
+                    //$scope.projects = response.data;
+                    //$scope.projects[$context] = _.without($scope.projects[$context], $project);
+                    $scope.selected.project.timers = _.without($scope.selected.project.timers, $timer);
+                });
+            }
         };
 
         /**
