@@ -18,6 +18,7 @@ var app = angular.module('projects');
             is_timing: false
         };
         $scope.selected = {};
+        $scope.flash_messages = [];
 
         /**
          * watches
@@ -195,10 +196,19 @@ var app = angular.module('projects');
 
         $scope.deleteProject = function ($project) {
             if (confirm("Are you sure you want to delete this project?")) {
-                ProjectsFactory.deleteProject($project).then(function (response) {
-                    //$scope.projects = response.data;
-                    $scope.projects = _.without($scope.projects, $project);
-                });
+                ProjectsFactory.deleteProject($project)
+                    .then(function (response) {
+                        //An error message for if the user has been logged out
+                        //Angular thinks this exception is a success :P
+                        if (response.data.error) {
+                            $scope.flash_messages.push(response.data.error);
+                            return false;
+                        }
+                        $scope.projects = _.without($scope.projects, $project);
+                    })
+                    .catch(function (response) {
+                        $scope.flash_messages.push(response.data.error);
+                    });
             }
         };
 

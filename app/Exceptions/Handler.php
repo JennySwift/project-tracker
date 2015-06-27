@@ -8,7 +8,9 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Redirect;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Symfony\Component\HttpKernel\Exception\TooManyRequestsHttpException;
+use Symfony\Component\Routing\Exception\MethodNotAllowedException;
 
 class Handler extends ExceptionHandler
 {
@@ -66,6 +68,14 @@ class Handler extends ExceptionHandler
                 'error' => "{$model} not found.",
                 'status' => Response::HTTP_NOT_FOUND
             ], Response::HTTP_NOT_FOUND);
+        }
+
+        // Method not allowed exception handler.
+        // For when user has been logged out.
+        if ($e instanceof MethodNotAllowedHttpException) {
+            return response([
+                'error' => "You have been logged out.",
+            ]);
         }
 
         return parent::render($request, $e);

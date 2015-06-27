@@ -87,25 +87,7 @@ class ProjectsController extends Controller
      */
     public function destroy($id)
     {
-//        try{
-        /**
-         * @see http://laravel.com/docs/5.0/errors#handling-errors
-         */
         $project = Project::whereUserIsPayee()->findOrFail($id);
-//        }
-//        catch(ModelNotFoundException $e) {
-//            return response([
-//                'error' => 'Model not found.',
-//                'status' => Response::HTTP_NOT_FOUND
-//            ], Response::HTTP_NOT_FOUND);
-//        }
-
-//        if(is_null($project)) {
-//            return response([
-//                'error' => 'Project not found.',
-//                'status' => 404
-//            ], 404);
-//        }
 
         $project->delete();
 
