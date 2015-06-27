@@ -64,6 +64,7 @@ class TimersController extends Controller
 
         $data = [
             'payer_id' => $payer->id,
+            'payee_id' => $payee->id,
             'message' => Auth::user()->name . ' has marked all timers as paid.'
         ];
 
