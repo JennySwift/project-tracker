@@ -100,16 +100,12 @@ class TimersController extends Controller
         //Pusher
         $pusher = new Pusher(env('PUSHER_PUBLIC_KEY'), env('PUSHER_SECRET_KEY'), env('PUSHER_APP_ID'));
 
-        $channel = 'testChannel';
-        $event = 'testEvent';
         $data = [
             'payer_id' => $project->payer_id,
             'message' => Auth::user()->name . ' has started a new timer on the project ' . $project->description
         ];
 
-        $pusher->trigger($channel, $event, $data);
-
-//        return response($timer->toArray(), Response::HTTP_CREATED); // = 201 HTTP Created code
+        $pusher->trigger('timerChannel', 'startTimer', $data);
 
         return $this->responseCreated($timer);
     }
@@ -134,6 +130,16 @@ class TimersController extends Controller
 
         $timer->calculatePrice();
 
+        //Pusher
+        $pusher = new Pusher(env('PUSHER_PUBLIC_KEY'), env('PUSHER_SECRET_KEY'), env('PUSHER_APP_ID'));
+
+        $data = [
+            'payer_id' => $project->payer_id,
+            'message' => Auth::user()->name . ' has stopped the timer on the project ' . $project->description . '.'
+        ];
+
+        $pusher->trigger('timerChannel', 'stopTimer', $data);
+
         // Create the fractal manager
         // @TODO: You could extract the next two lines to a ServiceProvider
         $fractal = new Manager();
@@ -148,7 +154,6 @@ class TimersController extends Controller
         return response()->json($fractal->createData($resource)->toArray());
 
 //        return $this->responseOk($timer);
-//        return response($timer->toArray(), Response::HTTP_OK);
     }
 
 //    /**

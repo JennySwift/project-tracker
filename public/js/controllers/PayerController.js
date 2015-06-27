@@ -29,13 +29,19 @@ var app = angular.module('projects');
 
         var pusher = new Pusher($scope.pusher_public_key);
 
-        var channel = pusher.subscribe('testChannel');
+        var channel = pusher.subscribe('timerChannel');
 
-        channel.bind('testEvent', function(data) {
+        channel.bind('startTimer', function(data) {
             if ($scope.me.id === data.payer_id) {
                 $scope.flash_messages.push(data.message);
                 $scope.$apply();
-                //alert(data.message);
+            }
+        });
+
+        channel.bind('stopTimer', function(data) {
+            if ($scope.me.id === data.payer_id) {
+                $scope.flash_messages.push(data.message);
+                $scope.$apply();
             }
         });
 
