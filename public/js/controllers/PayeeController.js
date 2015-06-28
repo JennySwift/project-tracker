@@ -112,7 +112,13 @@ var app = angular.module('projects');
                     $scope.flash_messages.push('Your project is awaiting confirmation.');
                 })
                 .catch(function (response) {
-                    console.log(response);
+                    //Display the error messages to the user
+                    $.each(response.data, function (key, value) {
+                        //value is an array of errors, (for one thing, such as description)
+                        for (var i = 0; i < value.length; i++) {
+                            $scope.flash_messages.push(value[i]);
+                        }
+                    });
                 });
         };
 
