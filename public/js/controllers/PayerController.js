@@ -61,11 +61,11 @@ var app = angular.module('projects');
             if ($scope.me.id === data.payer_id) {
                 if (confirm(data.message)) {
                     $scope.confirmNewProject(data.project);
-                    $scope.flash_messages.push('Project confirmed!');
+                    $scope.flash_messages.push('You have confirmed the project!');
                 }
                 else {
                     $scope.declineNewProject(data.project);
-                    $scope.flash_messages.push('Project declined!');
+                    $scope.flash_messages.push('You have declined the project!');
                 }
                 $scope.$apply();
             }
@@ -104,7 +104,7 @@ var app = angular.module('projects');
 
         $scope.confirmNewProject = function ($project) {
             ProjectsFactory.confirmNewProject($project).then(function (response) {
-
+                $scope.projects.push(response.data);
             });
         };
 

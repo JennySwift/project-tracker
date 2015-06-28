@@ -19,7 +19,7 @@
     @include('templates.projects.index')
 
     <div ng-show="flash_messages.length > 0">
-        <div ng-repeat="message in flash_messages" class="alert alert-success">[[message]]</div>
+        <div ng-repeat="message in flash_messages track by $index" class="alert alert-success">[[message]]</div>
     </div>
 
     <h1>Add a new payer</h1>

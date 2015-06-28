@@ -11,6 +11,15 @@ use App\Models\Timer;
 class Payer extends User {
 
     /**
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function payees()
+    {
+        return $this->belongsToMany('App\User', 'payee_payer', 'payer_id', 'payee_id');
+    }
+
+    /**
      * Get all the projects where the user is the payer
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
@@ -20,11 +29,12 @@ class Payer extends User {
     }
 
     /**
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * Get all the projects where the user is the payee
+     * and the project has been confirmed
      */
-    public function payees()
+    public function confirmedProjects()
     {
-        return $this->belongsToMany('App\User', 'payee_payer', 'payer_id', 'payee_id');
+        return $this->hasMany('App\Models\Project', 'payer_id')
+            ->where('confirmed', 1);
     }
 }

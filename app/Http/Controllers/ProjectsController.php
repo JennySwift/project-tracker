@@ -12,6 +12,7 @@ use Illuminate\Http\Response;
 use JavaScript;
 use Debugbar;
 use Pusher;
+use Symfony\Component\Debug\Debug;
 
 /**
  * Class ProjectsController
@@ -73,7 +74,8 @@ class ProjectsController extends Controller
     }
 
     /**
-     * Update the project
+     * Update the project.
+     * Set confirmed to 1.
      * @param $id
      * @return mixed
      */
@@ -82,13 +84,14 @@ class ProjectsController extends Controller
         $project = Project::find($id);
         $project->confirmed = 1;
         $project->save();
-        Debugbar::info('something');
+
         //Pusher
         $pusher = new Pusher(env('PUSHER_PUBLIC_KEY'), env('PUSHER_SECRET_KEY'), env('PUSHER_APP_ID'));
 
         $data = [
             'payee_id' => $project->payee->id,
-            'message' => 'Project confirmed!'
+            'project' => $project,
+            'message' => $project->payer->name . ' has confirmed your project ' . $project->description . '!'
         ];
 
         $pusher->trigger('channel', 'confirmProject', $data);
@@ -102,15 +105,17 @@ class ProjectsController extends Controller
      */
     public function declineNewProject(Request $request)
     {
-//        Debugbar::info('project', $request->get('project')['id']);
-        $project = Project::find($request->get('project')['id']);
+        //Find the project
+        $id = (int) $request->get('project')['id'];
+        $project = Project::find($id);
 
-        //Pusher
+//        //Pusher
         $pusher = new Pusher(env('PUSHER_PUBLIC_KEY'), env('PUSHER_SECRET_KEY'), env('PUSHER_APP_ID'));
 
         $data = [
             'payee_id' => $project->payee->id,
-            'message' => 'Project rejected!'
+            'project' => $project,
+            'message' => $project->payer->name . ' has rejected your project ' . $project->description . '!'
         ];
 
         $pusher->trigger('channel', 'declineProject', $data);

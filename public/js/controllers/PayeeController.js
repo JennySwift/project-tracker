@@ -31,17 +31,28 @@ var app = angular.module('projects');
 
         var channel = pusher.subscribe('channel');
 
+        /**
+         * The payer has confirmed the user's project
+         */
         channel.bind('confirmProject', function(data) {
             if ($scope.me.id === data.payee_id) {
                 $scope.flash_messages.push(data.message);
+                $scope.projects.push(data.project);
                 $scope.$apply();
             }
         });
 
+        /**
+         * The payer has declined the user's project
+         */
         channel.bind('declineProject', function(data) {
             if ($scope.me.id === data.payee_id) {
                 $scope.flash_messages.push(data.message);
                 $scope.$apply();
+
+                //Delete the project
+                //(The user has to be payee in order for the project to be deleted.)
+                $scope.deleteProject(data.project, 'no');
             }
         });
 
@@ -97,7 +108,8 @@ var app = angular.module('projects');
             }
             ProjectsFactory.insertProject($scope.new_project.email, $scope.new_project.description, $scope.new_project.rate)
                 .then(function (response) {
-                    $scope.projects.push(response.data)
+                    //$scope.projects.push(response.data)
+                    $scope.flash_messages.push('Your project is awaiting confirmation.');
                 })
                 .catch(function (response) {
                     console.log(response);
@@ -223,23 +235,40 @@ var app = angular.module('projects');
             }
         };
 
-        $scope.deleteProject = function ($project) {
-            if (confirm("Are you sure you want to delete this project?")) {
-                ProjectsFactory.deleteProject($project)
-                    .then(function (response) {
-                        //An error message for if the user has been logged out
-                        //Angular thinks this exception is a success :P
-                        if (response.data.error) {
-                            $scope.flash_messages.push(response.data.error);
-                            return false;
-                        }
-                        $scope.projects = _.without($scope.projects, $project);
-                        $scope.flash_messages.push('Project ' + $project.description + ' deleted.');
-                    })
-                    .catch(function (response) {
-                        $scope.flash_messages.push(response.data.error);
-                    });
+        //Todo: Surely these two functions for deleting the project could be written better :P
+        $scope.deleteProject = function ($project, $confirm) {
+            if ($confirm === 'no') {
+                //Delete the project without confirming (the payer has rejected it)
+                $scope.reallyDeleteProject($project);
             }
+            else {
+                //Delete the project but confirm first
+                if (confirm("Are you sure you want to delete this project?")) {
+                    $scope.reallyDeleteProject($project);
+                }
+            }
+        };
+
+        /**
+         * I have two functions for deleting the project because on one occassion
+         * I don't want to confirm with the user before deleting
+         * (when the payer has rejected the project).
+         */
+        $scope.reallyDeleteProject = function ($project) {
+            ProjectsFactory.deleteProject($project)
+                .then(function (response) {
+                    //An error message for if the user has been logged out
+                    //Angular thinks this exception is a success :P
+                    if (response.data.error) {
+                        $scope.flash_messages.push(response.data.error);
+                        return false;
+                    }
+                    $scope.projects = _.without($scope.projects, $project);
+                    $scope.flash_messages.push('Project ' + $project.description + ' deleted.');
+                })
+                .catch(function (response) {
+                    $scope.flash_messages.push(response.data.error);
+                });
         };
 
         $scope.deleteTimer = function ($timer) {

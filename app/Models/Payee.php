@@ -28,4 +28,14 @@ class Payee extends User
         return $this->hasMany('App\Models\Project', 'payee_id');
     }
 
+    /**
+     * Get all the projects where the user is the payee
+     * and the project has been confirmed
+     */
+    public function confirmedProjects()
+    {
+        return $this->hasMany('App\Models\Project', 'payee_id')
+            ->where('confirmed', 1);
+    }
+
 }

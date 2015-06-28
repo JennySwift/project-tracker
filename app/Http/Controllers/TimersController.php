@@ -89,6 +89,13 @@ class TimersController extends Controller
     public function startProjectTimer(Request $request)
     {
         $project = Project::find($request->get('project_id'));
+
+        //Check the project has been confirmed by the payer
+        if (!$project->confirmed) {
+            return 'The project has not been confirmed! You cannot start a timer for it.';
+        }
+
+        //Create the timer
         $timer = Timer::create([
             'project_id' => $project->id,
             'start' => Carbon::now()->toDateTimeString()

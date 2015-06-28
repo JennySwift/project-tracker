@@ -39,7 +39,7 @@ class PagesController extends Controller {
         $payee = Payee::find(Auth::user()->id);
 
         JavaScript::put([
-            'payee_projects' => $payee->projects->toArray(),
+            'payee_projects' => $payee->confirmedProjects->toArray(),
             'payers' => $payee->payers->toArray(),
             'me' => Auth::user(),
             'pusher_public_key' => $pusher_public_key
@@ -54,14 +54,13 @@ class PagesController extends Controller {
      */
     public function payer()
     {
-        Debugbar::info('hi');
         //I got an error with the package if
         //I didn't put $pusher_public_key into a variable first
         $pusher_public_key = env('PUSHER_PUBLIC_KEY');
         $payer = Payer::find(Auth::user()->id);
 
         JavaScript::put([
-            'payer_projects' => $payer->projects->toArray(),
+            'payer_projects' => $payer->confirmedProjects->toArray(),
             'payees' => $payer->payees->toArray(),
             'me' => Auth::user(),
             'pusher_public_key' => $pusher_public_key
