@@ -257,12 +257,6 @@ var app = angular.module('projects');
         $scope.reallyDeleteProject = function ($project) {
             ProjectsFactory.deleteProject($project)
                 .then(function (response) {
-                    //An error message for if the user has been logged out
-                    //Angular thinks this exception is a success :P
-                    if (response.data.error) {
-                        $scope.flash_messages.push(response.data.error);
-                        return false;
-                    }
                     $scope.projects = _.without($scope.projects, $project);
                     $scope.flash_messages.push('Project ' + $project.description + ' deleted.');
                 })

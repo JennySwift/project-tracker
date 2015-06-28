@@ -72,10 +72,12 @@ class Handler extends ExceptionHandler
 
         // Method not allowed exception handler.
         // For when user has been logged out.
+        //Todo: Modify Auth middleware to throw a different exception when
+        //Todo: the user has been logged out.
         if ($e instanceof MethodNotAllowedHttpException) {
             return response([
                 'error' => "You have been logged out.",
-            ]);
+            ], Response::HTTP_UNAUTHORIZED);
         }
 
         return parent::render($request, $e);
