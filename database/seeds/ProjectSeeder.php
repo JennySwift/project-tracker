@@ -45,7 +45,7 @@ class ProjectSeeder extends Seeder
                 'payer_id' => $faker->randomElement($payee_john->payers()->lists('id')->all()),
                 'description' => $faker->word,
                 'rate_per_hour' => 40,
-                'confirmed' => 1
+                'status' => 'confirmed'
             ]);
 
             $this->createTimersForProject($project);
@@ -57,7 +57,7 @@ class ProjectSeeder extends Seeder
             'payer_id' => $jenny->id,
             'description' => $faker->word,
             'rate_per_hour' => 40,
-            'confirmed' => 1
+            'status' => 'pending'
         ]);
 
         $this->createTimersForProject($project);
@@ -72,7 +72,7 @@ class ProjectSeeder extends Seeder
                 'payer_id' => $john->id,
                 'description' => $faker->word,
                 'rate_per_hour' => 1,
-                'confirmed' => 1
+                'status' => 'confirmed'
             ]);
 
             $this->createTimersForProject($project);
@@ -88,7 +88,7 @@ class ProjectSeeder extends Seeder
                 'payer_id' => $jenny->id,
                 'description' => $faker->word,
                 'rate_per_hour' => 40,
-                'confirmed' => 1
+                'status' => 'confirmed'
             ]);
 
             $this->createTimersForProject($project);
@@ -104,7 +104,7 @@ class ProjectSeeder extends Seeder
                 'payer_id' => $john->id,
                 'description' => $faker->word,
                 'rate_per_hour' => 10,
-                'confirmed' => 1
+                'status' => 'confirmed'
             ]);
 
             $this->createTimersForProject($project);

@@ -21,17 +21,17 @@ class NotificationSeeder extends Seeder
 
 //        dd($project->rate_per_hour);
 
-        $data = [
-            'payee_id' => 4,
-            'payer_id' => 1,
-            'project' => $project,
-            'message' => 'John would like to start a new project with you, with the description \'' . $project->description . ',\' and at $' . $project->rate_per_hour . '/hour. Is this ok?'
-        ];
-
-        Notification::create([
-            'user_id' => 1,
-            'message' => 'John would like to start a new project with you, with the description "something", and at $40/hour. Is this ok?'
-        ]);
+//        $data = [
+//            'payee_id' => 4,
+//            'payer_id' => 1,
+//            'project' => $project,
+//            'message' => 'John would like to start a new project with you, with the description \'' . $project->description . ',\' and at $' . $project->rate_per_hour . '/hour. Is this ok?'
+//        ];
+//
+//        Notification::create([
+//            'user_id' => 1,
+//            'message' => 'John would like to start a new project with you, with the description "something", and at $40/hour. Is this ok?'
+//        ]);
     }
 
 }

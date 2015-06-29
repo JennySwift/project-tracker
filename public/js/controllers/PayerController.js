@@ -20,6 +20,7 @@ var app = angular.module('projects');
         };
         $scope.selected = {};
         $scope.flash_messages = [];
+        $scope.project_requests = project_requests;
 
         /**
          * Pusher
@@ -60,17 +61,24 @@ var app = angular.module('projects');
 
         channel.bind('insertProject', function(data) {
             if ($scope.me.id === data.payer_id) {
-                if (confirm(data.message)) {
-                    $scope.confirmNewProject(data.project);
-                    $scope.flash_messages.push('You have confirmed the project!');
-                }
-                else {
-                    $scope.declineNewProject(data.project);
-                    $scope.flash_messages.push('You have declined the project!');
-                }
+                $scope.project_requests.push(data.project);
                 $scope.$apply();
             }
         });
+
+        //channel.bind('insertProject', function(data) {
+        //    if ($scope.me.id === data.payer_id) {
+        //        if (confirm(data.message)) {
+        //            $scope.confirmNewProject(data.project);
+        //            $scope.flash_messages.push('You have confirmed the project!');
+        //        }
+        //        else {
+        //            $scope.declineNewProject(data.project);
+        //            $scope.flash_messages.push('You have declined the project!');
+        //        }
+        //        $scope.$apply();
+        //    }
+        //});
 
         /**
          * watches
@@ -106,12 +114,15 @@ var app = angular.module('projects');
         $scope.confirmNewProject = function ($project) {
             ProjectsFactory.confirmNewProject($project).then(function (response) {
                 $scope.projects.push(response.data);
+                $scope.flash_messages.push('You have confirmed the project!');
+                $scope.project_requests = _.without($scope.project_requests, $project);
             });
         };
 
         $scope.declineNewProject = function ($project) {
             ProjectsFactory.declineNewProject($project).then(function (response) {
-
+                $scope.flash_messages.push('You have declined the project!');
+                $scope.project_requests = _.without($scope.project_requests, $project);
             });
         };
 

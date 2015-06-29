@@ -11,9 +11,6 @@
 	h1 {
 		margin-bottom: 30px;
 	}
-	img {
-		border-radius: 23px;
-	}
     input {
       background: white;
     }
@@ -22,4 +19,8 @@
       border-radius: 10px;
       padding: 34px 0;
     }
+}
+
+.gravatar {
+  border-radius: 23px;
 }

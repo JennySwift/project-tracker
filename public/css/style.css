@@ -373,14 +373,15 @@ li {
       margin: 0px 20px; }
   #payee h1, #payer h1 {
     margin-bottom: 30px; }
-  #payee img, #payer img {
-    border-radius: 23px; }
   #payee input, #payer input {
     background: white; }
   #payee .input-container, #payer .input-container {
     background: #F5F1F2;
     border-radius: 10px;
     padding: 34px 0; }
+
+.gravatar {
+  border-radius: 23px; }
 
 body.browser-height {
   box-sizing: border-box; }

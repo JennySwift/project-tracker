@@ -65,6 +65,7 @@ class PagesController extends Controller {
             'payees' => $payer->payees->toArray(),
             'me' => Auth::user(),
             'notifications' => $payer->notifications,
+            'project_requests' => $payer->projectRequests,
             'pusher_public_key' => $pusher_public_key
         ]);
 

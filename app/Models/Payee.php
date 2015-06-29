@@ -35,7 +35,7 @@ class Payee extends User
     public function confirmedProjects()
     {
         return $this->hasMany('App\Models\Project', 'payee_id')
-            ->where('confirmed', 1);
+            ->where('status', 'confirmed');
     }
 
 }

@@ -9,6 +9,12 @@ use App\User;
  * Views
  */
 
+Route::get('/test', function()
+{
+    $payer = Payer::find(1);
+    return $payer->projectRequests()->lists('status');
+});
+
 //test
 //Route::any('/test', function()
 //{
@@ -20,13 +26,6 @@ use App\User;
 //
 //    $pusher->trigger($channel, $event, $data);
 //});
-
-Route::get('/test', function()
-{
-    $user = User::first();
-    //dd($user);
-    return $user;
-});
 
 //Projects
 //Route::get('projects', ['as' => 'projects', 'uses' => 'PagesController@index']);

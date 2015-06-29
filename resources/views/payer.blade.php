@@ -8,11 +8,11 @@
     include($head_links);
     ?>
 </head>
-<body>
+<body ng-controller="payer">
 
 @include('templates.header')
 
-<div ng-controller="payer" id="payer" class="container">
+<div id="payer" class="container">
 
 
     {{--    @include($templates . '/popups/project/index.php')--}}
@@ -24,6 +24,16 @@
 
     <div ng-show="notifications.length > 0">
         <div ng-repeat="notification in notifications track by $index" class="alert alert-success">[[notification.message]]</div>
+    </div>
+
+    <div ng-show="project_requests.length > 0">
+        <div ng-repeat="project in project_requests track by $index" class="alert alert-success">
+            <div>[[project.payee.name]] would like to start a new project with you.</div>
+            <div>Description: [[project.description]]</div>
+            <div>Rate/hour: [[project.rate_per_hour]]</div>
+            <button ng-click="confirmNewProject(project)" class="btn btn-sm btn-success">confirm</button>
+            <button ng-click="declineNewProject(project)" class="btn btn-sm btn-danger">decline</button>
+        </div>
     </div>
 
 
@@ -39,7 +49,7 @@
                 </tr>
 
                 <tr ng-repeat="payee in payees">
-                    <td><img ng-src="[[payee.gravatar]]" alt=""></td>
+                    <td><img class="gravatar" ng-src="[[payee.gravatar]]" alt=""></td>
                     <td>[[payee.name]]</td>
                     <td>[[payee.formatted_owed_by_user]]</td>
                 </tr>
@@ -60,7 +70,7 @@
         </tr>
         <tr ng-repeat="project in projects">
             <td ng-click="showProjectPopup(project)" class="pointer">[[project.payee.name]]
-                <img ng-src="[[project.payee.gravatar]]">
+                <img ng-src="[[project.payee.gravatar]]" class="gravatar">
             </td>
             <td ng-click="showProjectPopup(project)" class="pointer">[[project.description]]</td>
             <td ng-click="showProjectPopup(project)" class="pointer">$[[project.rate_per_hour]]</td>

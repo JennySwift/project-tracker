@@ -35,6 +35,12 @@ class Payer extends User {
     public function confirmedProjects()
     {
         return $this->hasMany('App\Models\Project', 'payer_id')
-            ->where('confirmed', 1);
+            ->where('status', 'confirmed');
+    }
+
+    public function projectRequests()
+    {
+        return $this->hasMany('App\Models\Project', 'payer_id')
+            ->where('status', 'pending');
     }
 }

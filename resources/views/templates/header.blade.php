@@ -17,5 +17,10 @@
         </ul>
     </li>
 
+    <li>
+        <span>[[me.name]]</span>
+        <img ng-src="[[me.gravatar]]" class="gravatar">
+    </li>
+
 </ul>
 

@@ -82,7 +82,7 @@ class ProjectsController extends Controller
     public function update($id)
     {
         $project = Project::find($id);
-        $project->confirmed = 1;
+        $project->status = 'confirmed';
         $project->save();
 
         //Pusher
@@ -108,6 +108,8 @@ class ProjectsController extends Controller
         //Find the project
         $id = (int) $request->get('project')['id'];
         $project = Project::find($id);
+        $project->status = 'declined';
+        $project->save();
 
 //        //Pusher
         $pusher = new Pusher(env('PUSHER_PUBLIC_KEY'), env('PUSHER_SECRET_KEY'), env('PUSHER_APP_ID'));
