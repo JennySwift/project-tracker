@@ -42,6 +42,7 @@ class PagesController extends Controller {
             'payee_projects' => $payee->confirmedProjects->toArray(),
             'payers' => $payee->payers->toArray(),
             'me' => Auth::user(),
+            'notifications' => $payee->notifications,
             'pusher_public_key' => $pusher_public_key
         ]);
 
@@ -63,6 +64,7 @@ class PagesController extends Controller {
             'payer_projects' => $payer->confirmedProjects->toArray(),
             'payees' => $payer->payees->toArray(),
             'me' => Auth::user(),
+            'notifications' => $payer->notifications,
             'pusher_public_key' => $pusher_public_key
         ]);
 

@@ -49,6 +49,15 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     protected $hidden = ['password', 'remember_token'];
 
     /**
+     * Get all the user's notifications
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function notifications()
+    {
+        return $this->hasMany('App\Models\Notification', 'user_id');
+    }
+
+    /**
      * Return the gravatar URL for the user
      * This method needs to be called getFieldAttribute
      * @return string

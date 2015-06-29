@@ -51,6 +51,17 @@ class ProjectSeeder extends Seeder
             $this->createTimersForProject($project);
         }
 
+        //Create a project with Jenny as payer
+        $project = Project::create([
+            'payee_id' => $john->id,
+            'payer_id' => $jenny->id,
+            'description' => $faker->word,
+            'rate_per_hour' => 40,
+            'confirmed' => 1
+        ]);
+
+        $this->createTimersForProject($project);
+
         /**
          * John is payer
          */

@@ -22,6 +22,10 @@
         <div ng-repeat="message in flash_messages track by $index" class="alert alert-success">[[message]]</div>
     </div>
 
+    <div ng-show="notifications.length > 0">
+        <div ng-repeat="notification in notifications track by $index" class="alert alert-success">[[notification.message]]</div>
+    </div>
+
 
     <div class="flex">
 

@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
 
         $this->call('UserSeeder');
         $this->call('ProjectSeeder');
+        $this->call('NotificationSeeder');
 
 
         DB::statement('SET FOREIGN_KEY_CHECKS=1');

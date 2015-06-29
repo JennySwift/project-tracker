@@ -9,6 +9,7 @@ var app = angular.module('projects');
 
         $scope.projects = payer_projects;
         $scope.me = me;
+        $scope.notifications = notifications;
         $scope.payees = payees;
         $scope.new_project = {};
         $scope.show = {
