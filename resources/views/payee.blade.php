@@ -22,6 +22,14 @@
         <div ng-repeat="message in flash_messages track by $index" class="alert alert-success">[[message]]</div>
     </div>
 
+    <div ng-show="validation_messages.length > 0">
+        <div ng-repeat="message in validation_messages track by $index" class="alert alert-danger">[[message]]</div>
+    </div>
+
+    <div ng-show="notifications.length > 0">
+        <div ng-repeat="notification in notifications track by $index" class="alert alert-success">[[notification.message]]</div>
+    </div>
+
     <h1>Add a new payer</h1>
 
     <div class="flex margin-bottom input-container">

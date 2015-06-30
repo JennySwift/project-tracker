@@ -19,6 +19,7 @@ var app = angular.module('projects');
         };
         $scope.selected = {};
         $scope.flash_messages = [];
+        $scope.validation_messages = [];
 
         /**
          * Pusher
@@ -106,6 +107,7 @@ var app = angular.module('projects');
             {
                 return false;
             }
+            $scope.validation_messages = [];
             ProjectsFactory.insertProject($scope.new_project.email, $scope.new_project.description, $scope.new_project.rate)
                 .then(function (response) {
                     //$scope.projects.push(response.data)
@@ -116,7 +118,7 @@ var app = angular.module('projects');
                     $.each(response.data, function (key, value) {
                         //value is an array of errors, (for one thing, such as description)
                         for (var i = 0; i < value.length; i++) {
-                            $scope.flash_messages.push(value[i]);
+                            $scope.validation_messages.push(value[i]);
                         }
                     });
                 });
