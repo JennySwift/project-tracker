@@ -71,6 +71,37 @@ var app = angular.module('projects');
          */
 
         /**
+         * Todo: Duplicate code from PayeeController.js
+         */
+
+        $scope.$watch('project_popup.timer_time.seconds', function (newValue, oldValue) {
+            if (newValue < 10) {
+                $scope.project_popup.timer_time.formatted_seconds = '0' + newValue;
+            }
+            else {
+                $scope.project_popup.timer_time.formatted_seconds = newValue;
+            }
+        });
+
+        $scope.$watch('project_popup.timer_time.minutes', function (newValue, oldValue) {
+            if (newValue < 10) {
+                $scope.project_popup.timer_time.formatted_minutes = '0' + newValue;
+            }
+            else {
+                $scope.project_popup.timer_time.formatted_minutes = newValue;
+            }
+        });
+
+        $scope.$watch('project_popup.timer_time.hours', function (newValue, oldValue) {
+            if (newValue < 10) {
+                $scope.project_popup.timer_time.formatted_hours = '0' + newValue;
+            }
+            else {
+                $scope.project_popup.timer_time.formatted_hours = newValue;
+            }
+        });
+
+        /**
          * select
          */
 
@@ -138,18 +169,75 @@ var app = angular.module('projects');
             }, 3000);
         };
 
+        /**
+         * Todo: Duplicate code from PayeeController.js
+         * @param $event
+         * @param $popup
+         */
+
         $scope.showProjectPopup = function ($project) {
             ProjectsFactory.showProject($project).then(function (response) {
                 $scope.selected.project = response.data;
+
+                //Check if the project has a timer going
+
+                var $timer_in_progress = $scope.isTimerGoing();
+                if ($timer_in_progress) {
+                    //Set the time of the timer in progress to what it should be
+                    var $start = moment($timer_in_progress.formatted_start, 'DD/MM/YY HH:mm:ss');
+                    var $now = moment();
+                    var $time = $now.diff($start, 'seconds');
+                    var $hours = Math.floor($time / 3600);
+                    $time = $time - ($hours * 3600);
+                    var $minutes = Math.floor($time / 60);
+                    $time = $time - ($minutes * 60);
+                    var $seconds = $time;
+
+                    $scope.project_popup.timer_time.hours = $hours;
+                    $scope.project_popup.timer_time.minutes = $minutes;
+                    $scope.project_popup.timer_time.seconds = $seconds;
+
+                    //Resume the timer
+                    $scope.countUp();
+                }
+
                 $scope.show.popups.project = true;
             });
         };
+
+        $scope.isTimerGoing = function () {
+            return _.findWhere($scope.selected.project.timers, {finish: null});
+        };
+
+        $scope.stopJsTimer = function () {
+            $interval.cancel($scope.counter);
+            $scope.project_popup.is_timing = false;
+        };
+
+        $scope.countUp = function () {
+            $scope.project_popup.is_timing = true;
+
+            $scope.counter = $interval(function () {
+                if ($scope.project_popup.timer_time.seconds < 59) {
+                    $scope.project_popup.timer_time.seconds+= 1;
+                }
+                else if ($scope.project_popup.timer_time.minutes < 59) {
+                    $scope.newMinute();
+                }
+                else {
+                    $scope.newHour();
+                }
+
+            }, 1000);
+        };
+
 
         $scope.closePopup = function ($event, $popup) {
             var $target = $event.target;
             if ($target.className === 'popup-outer') {
                 $scope.show.popups[$popup] = false;
             }
+            $scope.stopJsTimer();
         };
 
         $scope.resetTimer = function () {

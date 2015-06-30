@@ -133,23 +133,6 @@ var app = angular.module('projects');
         $scope.countUp = function () {
             $scope.project_popup.is_timing = true;
 
-            //$scope.counter = setInterval(function(){
-            //    console.log('something');
-            //}, 1000);
-
-            //$scope.counter = setInterval(function () {
-            //    if ($scope.project_popup.timer_time.seconds < 59) {
-            //        $scope.project_popup.timer_time.seconds+= 1;
-            //    }
-            //    else if ($scope.project_popup.timer_time.minutes < 59) {
-            //        $scope.newMinute();
-            //    }
-            //    else {
-            //        $scope.newHour();
-            //    }
-            //
-            //}, 1000);
-
             $scope.counter = $interval(function () {
                 if ($scope.project_popup.timer_time.seconds < 59) {
                     $scope.project_popup.timer_time.seconds+= 1;
