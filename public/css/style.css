@@ -383,6 +383,32 @@ li {
 .gravatar {
   border-radius: 23px; }
 
+#feedback {
+  position: fixed;
+  right: 11px;
+  top: 44px;
+  z-index: 9999; }
+  #feedback .feedback-message {
+    background: lightblue;
+    line-height: 40px;
+    margin-bottom: 20px;
+    padding: 0px 10px;
+    border-radius: 4px;
+    position: relative; }
+  #feedback .feedback-message.ng-move,
+  #feedback .feedback-message.ng-enter,
+  #feedback .feedback-message.ng-leave {
+    -webkit-transition: all linear .5s;
+    transition: all linear .5s; }
+  #feedback .feedback-message.ng-leave.ng-leave-active,
+  #feedback .feedback-message.ng-move,
+  #feedback .feedback-message.ng-enter {
+    left: 200px; }
+  #feedback .feedback-message.ng-leave,
+  #feedback .feedback-message.ng-move.ng-move-active,
+  #feedback .feedback-message.ng-enter.ng-enter-active {
+    left: 0; }
+
 body.browser-height {
   box-sizing: border-box; }
 

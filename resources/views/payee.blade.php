@@ -14,9 +14,13 @@
 
 <div id="payee" class="container">
 
-
-    {{--    @include($templates . '/popups/project/index.php')--}}
     @include('templates.projects.index')
+
+    {{--<button ng-click="testFeedback()">testFeedback</button>--}}
+
+    <div id="feedback">
+        <div ng-repeat="message in feedback_messages track by $index" class="feedback-message">[[message]]</div>
+    </div>
 
     <div ng-show="flash_messages.length > 0">
         <div ng-repeat="message in flash_messages track by $index" class="alert alert-success">[[message]]</div>

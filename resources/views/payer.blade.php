@@ -26,6 +26,10 @@
         <div ng-repeat="notification in notifications track by $index" class="alert alert-success">[[notification.message]]</div>
     </div>
 
+    <div id="feedback">
+        <div ng-repeat="message in feedback_messages track by $index" class="feedback-message">[[message]]</div>
+    </div>
+
     <div ng-show="project_requests.length > 0">
         <div ng-repeat="project in project_requests track by $index" class="alert alert-success">
             <div>[[project.payee.name]] would like to start a new project with you.</div>

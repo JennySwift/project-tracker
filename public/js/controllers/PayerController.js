@@ -20,6 +20,7 @@ var app = angular.module('projects');
         };
         $scope.selected = {};
         $scope.flash_messages = [];
+        $scope.feedback_messages = [];
         $scope.project_requests = project_requests;
 
         /**
@@ -114,14 +115,14 @@ var app = angular.module('projects');
         $scope.confirmNewProject = function ($project) {
             ProjectsFactory.confirmNewProject($project).then(function (response) {
                 $scope.projects.push(response.data);
-                $scope.flash_messages.push('You have confirmed the project!');
+                $scope.provideFeedback('You have confirmed the project!');
                 $scope.project_requests = _.without($scope.project_requests, $project);
             });
         };
 
         $scope.declineNewProject = function ($project) {
             ProjectsFactory.declineNewProject($project).then(function (response) {
-                $scope.flash_messages.push('You have declined the project!');
+                $scope.provideFeedback('You have declined the project!');
                 $scope.project_requests = _.without($scope.project_requests, $project);
             });
         };
@@ -133,6 +134,14 @@ var app = angular.module('projects');
         /**
          * other
          */
+
+        $scope.provideFeedback = function ($message) {
+            $scope.feedback_messages.push($message);
+            setTimeout(function () {
+                $scope.feedback_messages = _.without($scope.feedback_messages, $message);
+                $scope.$apply();
+            }, 3000);
+        };
 
         $scope.showProjectPopup = function ($project) {
             ProjectsFactory.showProject($project).then(function (response) {

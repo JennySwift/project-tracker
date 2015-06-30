@@ -20,6 +20,7 @@ var app = angular.module('projects');
         $scope.selected = {};
         $scope.flash_messages = [];
         $scope.validation_messages = [];
+        $scope.feedback_messages = [];
 
         /**
          * Pusher
@@ -266,7 +267,7 @@ var app = angular.module('projects');
             ProjectsFactory.deleteProject($project)
                 .then(function (response) {
                     $scope.projects = _.without($scope.projects, $project);
-                    $scope.flash_messages.push('Project ' + $project.description + ' deleted.');
+                    $scope.provideFeedback('Project ' + $project.description + ' deleted.');
                 })
                 .catch(function (response) {
                     $scope.flash_messages.push(response.data.error);
@@ -277,7 +278,7 @@ var app = angular.module('projects');
             if (confirm("Are you sure you want to delete this timer?")) {
                 ProjectsFactory.deleteTimer($timer).then(function (response) {
                     $scope.selected.project.timers = _.without($scope.selected.project.timers, $timer);
-                    $scope.flash_messages.push('Timer deleted.');
+                    $scope.provideFeedback('Timer deleted.');
                 });
             }
         };
@@ -285,6 +286,18 @@ var app = angular.module('projects');
         /**
          * other
          */
+
+        $scope.provideFeedback = function ($message) {
+            $scope.feedback_messages.push($message);
+            setTimeout(function () {
+                $scope.feedback_messages = _.without($scope.feedback_messages, $message);
+                $scope.$apply();
+            }, 3000);
+        };
+
+        $scope.testFeedback = function () {
+            $scope.provideFeedback('something');
+        };
 
         $scope.showProjectPopup = function ($project) {
             ProjectsFactory.showProject($project).then(function (response) {

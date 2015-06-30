@@ -1,0 +1,45 @@
+#feedback {
+  position: fixed;
+  right: 11px;
+  top: 44px;
+  z-index: 9999;
+  .feedback-message {
+    background: lightblue;
+    line-height:40px;
+    margin-bottom: 20px;
+    padding: 0px 10px;
+    border-radius: 4px;
+    position: relative;
+  }
+
+  .feedback-message.ng-move,
+  .feedback-message.ng-enter,
+  .feedback-message.ng-leave {
+    -webkit-transition:all linear .5s;
+    transition:all linear .5s;
+  }
+
+  .feedback-message.ng-leave.ng-leave-active,
+  .feedback-message.ng-move,
+  .feedback-message.ng-enter {
+//    opacity:0;
+//    max-height:0;
+//    bottom: 50px;
+    left: 200px;
+//    right: 200px;
+  }
+
+  .feedback-message.ng-leave,
+  .feedback-message.ng-move.ng-move-active,
+  .feedback-message.ng-enter.ng-enter-active {
+//    opacity:1;
+//    max-height:40px;
+//    bottom: 0;
+    left: 0;
+//    right: 0;
+  }
+}
+
+
+
+
