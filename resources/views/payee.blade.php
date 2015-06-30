@@ -29,10 +29,6 @@
         </div>
     </div>
 
-    <div ng-show="flash_messages.length > 0">
-        <div ng-repeat="message in flash_messages track by $index" class="alert alert-success">[[message]]</div>
-    </div>
-
     <div ng-show="error_messages.length > 0">
         <div ng-repeat="message in error_messages track by $index" class="alert alert-danger">[[message]]</div>
     </div>

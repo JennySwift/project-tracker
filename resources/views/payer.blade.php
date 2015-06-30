@@ -14,16 +14,13 @@
 
 <div id="payer" class="container">
 
-
-    {{--    @include($templates . '/popups/project/index.php')--}}
     @include('templates.projects.index')
 
-    <div ng-show="flash_messages.length > 0">
-        <div ng-repeat="message in flash_messages track by $index" class="alert alert-success">[[message]]</div>
-    </div>
-
     <div ng-show="notifications.length > 0">
-        <div ng-repeat="notification in notifications track by $index" class="alert alert-success">[[notification.message]]</div>
+        <div ng-repeat="notification in notifications track by $index" class="alert alert-success message">
+            [[notification.message]]
+            <i ng-click="dismissNotification(notification)" class="fa fa-times"></i>
+        </div>
     </div>
 
     <div id="feedback">

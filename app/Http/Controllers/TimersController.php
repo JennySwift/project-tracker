@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests;
+use App\Models\Notification;
 use App\Models\Payee;
 use App\Models\Payer;
 use App\Models\Project;
@@ -17,6 +18,7 @@ use League\Fractal\Manager;
 use League\Fractal\Resource\Item;
 use League\Fractal\Serializer\ArraySerializer;
 use Pusher;
+use Debugbar;
 
 /**
  * Class TimersController
@@ -59,13 +61,23 @@ class TimersController extends Controller
                 'time_of_payment' => Carbon::now()
             ]);
 
+        $message = Auth::user()->name . ' has marked all timers as paid.';
+
+        //Create a notification in the database for the payer, in case they are not currently logged in
+        $notification = new Notification([
+            'message' => $message
+        ]);
+
+        $notification->user()->associate($payer->id);
+        $notification->save();
+
         //Pusher
         $pusher = new Pusher(env('PUSHER_PUBLIC_KEY'), env('PUSHER_SECRET_KEY'), env('PUSHER_APP_ID'));
 
         $data = [
             'payer_id' => $payer->id,
             'payee_id' => $payee->id,
-            'message' => Auth::user()->name . ' has marked all timers as paid.'
+            'notification' => $notification
         ];
 
         $pusher->trigger('channel', 'markAsPaid', $data);
@@ -91,7 +103,7 @@ class TimersController extends Controller
         $project = Project::find($request->get('project_id'));
 
         //Check the project has been confirmed by the payer
-        if (!$project->confirmed) {
+        if ($project->status !== 'confirmed') {
             return 'The project has not been confirmed! You cannot start a timer for it.';
         }
 
@@ -115,12 +127,22 @@ class TimersController extends Controller
 //            }
 //        }
 
+        $message = Auth::user()->name . ' has started a new timer on the project ' . $project->description;
+
+        //Create a notification in the database for the payer, in case they are not currently logged in
+        $notification = new Notification([
+            'message' => $message
+        ]);
+
+        $notification->user()->associate($project->payer->id);
+        $notification->save();
+
         //Pusher
         $pusher = new Pusher(env('PUSHER_PUBLIC_KEY'), env('PUSHER_SECRET_KEY'), env('PUSHER_APP_ID'));
 
         $data = [
             'payer_id' => $project->payer_id,
-            'message' => Auth::user()->name . ' has started a new timer on the project ' . $project->description
+            'notification' => $notification,
         ];
 
         $pusher->trigger('channel', 'startTimer', $data);
@@ -148,12 +170,22 @@ class TimersController extends Controller
 
         $timer->calculatePrice();
 
+        $message = Auth::user()->name . ' has stopped the timer on the project ' . $project->description . '.';
+
+        //Create a notification in the database for the payer, in case they are not currently logged in
+        $notification = new Notification([
+            'message' => $message
+        ]);
+
+        $notification->user()->associate($project->payer->id);
+        $notification->save();
+
         //Pusher
         $pusher = new Pusher(env('PUSHER_PUBLIC_KEY'), env('PUSHER_SECRET_KEY'), env('PUSHER_APP_ID'));
 
         $data = [
             'payer_id' => $project->payer_id,
-            'message' => Auth::user()->name . ' has stopped the timer on the project ' . $project->description . '.'
+            'notification' => $notification,
         ];
 
         $pusher->trigger('channel', 'stopTimer', $data);

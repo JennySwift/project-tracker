@@ -19,7 +19,6 @@ var app = angular.module('projects');
             is_timing: false
         };
         $scope.selected = {};
-        $scope.flash_messages = [];
         $scope.feedback_messages = [];
         $scope.project_requests = project_requests;
 
@@ -36,21 +35,21 @@ var app = angular.module('projects');
 
         channel.bind('startTimer', function(data) {
             if ($scope.me.id === data.payer_id) {
-                $scope.flash_messages.push(data.message);
+                $scope.notifications.push(data.notification);
                 $scope.$apply();
             }
         });
 
         channel.bind('stopTimer', function(data) {
             if ($scope.me.id === data.payer_id) {
-                $scope.flash_messages.push(data.message);
+                $scope.notifications.push(data.notification);
                 $scope.$apply();
             }
         });
 
         channel.bind('markAsPaid', function(data) {
             if ($scope.me.id === data.payer_id) {
-                $scope.flash_messages.push(data.message);
+                $scope.notifications.push(data.notification);
 
                 //Find the payee and update owed to 0.00
                 var $index = _.indexOf($scope.payees, _.findWhere($scope.payees, {id: data.payee_id}));
@@ -66,20 +65,6 @@ var app = angular.module('projects');
                 $scope.$apply();
             }
         });
-
-        //channel.bind('insertProject', function(data) {
-        //    if ($scope.me.id === data.payer_id) {
-        //        if (confirm(data.message)) {
-        //            $scope.confirmNewProject(data.project);
-        //            $scope.flash_messages.push('You have confirmed the project!');
-        //        }
-        //        else {
-        //            $scope.declineNewProject(data.project);
-        //            $scope.flash_messages.push('You have declined the project!');
-        //        }
-        //        $scope.$apply();
-        //    }
-        //});
 
         /**
          * watches
@@ -130,6 +115,16 @@ var app = angular.module('projects');
         /**
          * delete
          */
+
+        $scope.dismissNotification = function ($notification) {
+            ProjectsFactory.dismissNotification($notification)
+                .then(function (response) {
+                    $scope.notifications = _.without($scope.notifications, $notification);
+                })
+                .catch(function (response) {
+                    $scope.error_messages.push(response.data.error);
+                });
+        };
 
         /**
          * other
