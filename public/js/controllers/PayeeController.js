@@ -124,25 +124,44 @@ var app = angular.module('projects');
 
         $scope.startProjectTimer = function () {
             ProjectsFactory.startProjectTimer($scope.selected.project.id).then(function (response) {
-                //$scope.projects = response.data.projects;
-                //$scope.selected.project = response.data.project;
                 $scope.resetTimer();
-                $scope.project_popup.is_timing = true;
                 $scope.selected.project.timers.push(response.data);
-
-                $scope.counter = $interval(function () {
-                    if ($scope.project_popup.timer_time.seconds < 59) {
-                        $scope.project_popup.timer_time.seconds+= 1;
-                    }
-                    else if ($scope.project_popup.timer_time.minutes < 59) {
-                        $scope.newMinute();
-                    }
-                    else {
-                        $scope.newHour();
-                    }
-
-                }, 1000);
+                $scope.countUp();
             });
+        };
+
+        $scope.countUp = function () {
+            $scope.project_popup.is_timing = true;
+
+            //$scope.counter = setInterval(function(){
+            //    console.log('something');
+            //}, 1000);
+
+            //$scope.counter = setInterval(function () {
+            //    if ($scope.project_popup.timer_time.seconds < 59) {
+            //        $scope.project_popup.timer_time.seconds+= 1;
+            //    }
+            //    else if ($scope.project_popup.timer_time.minutes < 59) {
+            //        $scope.newMinute();
+            //    }
+            //    else {
+            //        $scope.newHour();
+            //    }
+            //
+            //}, 1000);
+
+            $scope.counter = $interval(function () {
+                if ($scope.project_popup.timer_time.seconds < 59) {
+                    $scope.project_popup.timer_time.seconds+= 1;
+                }
+                else if ($scope.project_popup.timer_time.minutes < 59) {
+                    $scope.newMinute();
+                }
+                else {
+                    $scope.newHour();
+                }
+
+            }, 1000);
         };
 
         $scope.addPayer = function ($keycode) {
@@ -200,9 +219,13 @@ var app = angular.module('projects');
                 $scope.payers[$payer_index].formatted_owed_to_user = response.data.payer.owed;
 
                 //Stop the JS timer
-                $interval.cancel($scope.counter);
-                $scope.project_popup.is_timing = false;
+                $scope.stopJsTimer();
             });
+        };
+
+        $scope.stopJsTimer = function () {
+            $interval.cancel($scope.counter);
+            $scope.project_popup.is_timing = false;
         };
 
         /**
@@ -311,8 +334,35 @@ var app = angular.module('projects');
         $scope.showProjectPopup = function ($project) {
             ProjectsFactory.showProject($project).then(function (response) {
                 $scope.selected.project = response.data;
+
+                //Check if the project has a timer going
+
+                var $timer_in_progress = $scope.isTimerGoing();
+                if ($timer_in_progress) {
+                    //Set the time of the timer in progress to what it should be
+                    var $start = moment($timer_in_progress.formatted_start, 'DD/MM/YY HH:mm:ss');
+                    var $now = moment();
+                    var $time = $now.diff($start, 'seconds');
+                    var $hours = Math.floor($time / 3600);
+                    $time = $time - ($hours * 3600);
+                    var $minutes = Math.floor($time / 60);
+                    $time = $time - ($minutes * 60);
+                    var $seconds = $time;
+
+                    $scope.project_popup.timer_time.hours = $hours;
+                    $scope.project_popup.timer_time.minutes = $minutes;
+                    $scope.project_popup.timer_time.seconds = $seconds;
+
+                    //Resume the timer
+                    $scope.countUp();
+                }
+
                 $scope.show.popups.project = true;
             });
+        };
+
+        $scope.isTimerGoing = function () {
+            return _.findWhere($scope.selected.project.timers, {finish: null});
         };
 
         $scope.closePopup = function ($event, $popup) {
@@ -320,6 +370,7 @@ var app = angular.module('projects');
             if ($target.className === 'popup-outer') {
                 $scope.show.popups[$popup] = false;
             }
+            $scope.stopJsTimer();
         };
 
         $scope.resetTimer = function () {

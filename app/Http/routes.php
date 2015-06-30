@@ -11,8 +11,9 @@ use App\User;
 
 Route::get('/test', function()
 {
-    $payer = Payer::find(1);
-    return $payer->projectRequests()->lists('status');
+    $timer = Timer::find(1);
+    //dd($timer);
+    return $timer;
 });
 
 //test

@@ -121,9 +121,11 @@ class Project extends Model {
         //all the timers from being attached to the project (unnecessary data)
         foreach ($this->timers()->get() as $timer) {
             //Calculate hours, minutes and seconds
-            $hours+= $timer->time->h;
-            $minutes+= $timer->time->i;
-            $seconds+= $timer->time->s;
+            if ($timer->time) {
+                $hours+= $timer->time->h;
+                $minutes+= $timer->time->i;
+                $seconds+= $timer->time->s;
+            }
         }
 
         //Stop total seconds from going above 59
