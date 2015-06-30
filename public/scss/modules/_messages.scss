@@ -40,6 +40,17 @@
   }
 }
 
+.message {
+  position: relative;
+  .fa-times {
+    position: absolute;
+    right: 8px;
+    top: 5px;
+    font-size: 28px;
+    cursor: pointer;
+  }
+}
+
 
 
 

@@ -409,6 +409,15 @@ li {
   #feedback .feedback-message.ng-enter.ng-enter-active {
     left: 0; }
 
+.message {
+  position: relative; }
+  .message .fa-times {
+    position: absolute;
+    right: 8px;
+    top: 5px;
+    font-size: 28px;
+    cursor: pointer; }
+
 body.browser-height {
   box-sizing: border-box; }
 

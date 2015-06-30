@@ -7,7 +7,7 @@ var app = angular.module('projects');
          * scope properties
          */
 
-        $scope.projects = payer_projects;
+        $scope.projects = projects;
         $scope.me = me;
         $scope.notifications = notifications;
         $scope.payees = payees;

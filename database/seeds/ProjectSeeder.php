@@ -57,7 +57,7 @@ class ProjectSeeder extends Seeder
             'payer_id' => $jenny->id,
             'description' => $faker->word,
             'rate_per_hour' => 40,
-            'status' => 'pending'
+            'status' => 'declined'
         ]);
 
         $this->createTimersForProject($project);

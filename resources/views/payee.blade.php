@@ -22,6 +22,13 @@
         <div ng-repeat="message in feedback_messages track by $index" class="feedback-message">[[message]]</div>
     </div>
 
+    <div ng-show="declined_projects.length > 0">
+        <div ng-repeat="project in declined_projects track by $index" class="alert alert-danger message">
+            [[project.payer.name]] has declined your project '[[project.description]]!'
+            <i ng-click="dismissDeclinedProjectMessage(project)" class="fa fa-times"></i>
+        </div>
+    </div>
+
     <div ng-show="flash_messages.length > 0">
         <div ng-repeat="message in flash_messages track by $index" class="alert alert-success">[[message]]</div>
     </div>

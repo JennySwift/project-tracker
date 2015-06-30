@@ -39,10 +39,11 @@ class PagesController extends Controller {
         $payee = Payee::find(Auth::user()->id);
 
         JavaScript::put([
-            'payee_projects' => $payee->confirmedProjects->toArray(),
+            'projects' => $payee->confirmedProjects->toArray(),
             'payers' => $payee->payers->toArray(),
             'me' => Auth::user(),
             'notifications' => $payee->notifications,
+            'declined_projects' => $payee->declinedProjects->toArray(),
             'pusher_public_key' => $pusher_public_key
         ]);
 
@@ -61,7 +62,7 @@ class PagesController extends Controller {
         $payer = Payer::find(Auth::user()->id);
 
         JavaScript::put([
-            'payer_projects' => $payer->confirmedProjects->toArray(),
+            'projects' => $payer->confirmedProjects->toArray(),
             'payees' => $payer->payees->toArray(),
             'me' => Auth::user(),
             'notifications' => $payer->notifications,

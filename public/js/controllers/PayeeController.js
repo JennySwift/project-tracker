@@ -7,7 +7,8 @@ var app = angular.module('projects');
          * scope properties
          */
 
-        $scope.projects = payee_projects;
+        $scope.projects = projects;
+        $scope.declined_projects = declined_projects;
         $scope.me = me;
         $scope.payers = payers;
         $scope.new_project = {};
@@ -49,12 +50,8 @@ var app = angular.module('projects');
          */
         channel.bind('declineProject', function(data) {
             if ($scope.me.id === data.payee_id) {
-                $scope.flash_messages.push(data.message);
+                $scope.declined_projects.push(data.project);
                 $scope.$apply();
-
-                //Delete the project
-                //(The user has to be payee in order for the project to be deleted.)
-                $scope.deleteProject(data.project, 'no');
             }
         });
 
@@ -244,30 +241,32 @@ var app = angular.module('projects');
             }
         };
 
-        //Todo: Surely these two functions for deleting the project could be written better :P
-        $scope.deleteProject = function ($project, $confirm) {
-            if ($confirm === 'no') {
-                //Delete the project without confirming (the payer has rejected it)
-                $scope.reallyDeleteProject($project);
-            }
-            else {
-                //Delete the project but confirm first
-                if (confirm("Are you sure you want to delete this project?")) {
-                    $scope.reallyDeleteProject($project);
-                }
+        /**
+         * Delete the project but confirm first
+         * @param $project
+         */
+        $scope.deleteProject = function ($project) {
+            if (confirm("Are you sure you want to delete this project?")) {
+                ProjectsFactory.deleteProject($project)
+                    .then(function (response) {
+                        $scope.projects = _.without($scope.projects, $project);
+                        $scope.provideFeedback('Project "' + $project.description + '" deleted.');
+                    })
+                    .catch(function (response) {
+                        $scope.flash_messages.push(response.data.error);
+                    });
             }
         };
 
         /**
-         * I have two functions for deleting the project because on one occassion
-         * I don't want to confirm with the user before deleting
-         * (when the payer has rejected the project).
+         * Delete the project, and
+         * dismiss the feedback message about the payer declining the project
+         * @param $project
          */
-        $scope.reallyDeleteProject = function ($project) {
+        $scope.dismissDeclinedProjectMessage = function ($project) {
             ProjectsFactory.deleteProject($project)
                 .then(function (response) {
-                    $scope.projects = _.without($scope.projects, $project);
-                    $scope.provideFeedback('Project ' + $project.description + ' deleted.');
+                    $scope.declined_projects = _.without($scope.declined_projects, $project);
                 })
                 .catch(function (response) {
                     $scope.flash_messages.push(response.data.error);

@@ -38,4 +38,14 @@ class Payee extends User
             ->where('status', 'confirmed');
     }
 
+    /**
+     * Get all the projects where the user is the payee
+     * and the project has been declined
+     */
+    public function declinedProjects()
+    {
+        return $this->hasMany('App\Models\Project', 'payee_id')
+            ->where('status', 'declined');
+    }
+
 }
