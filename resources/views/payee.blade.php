@@ -33,12 +33,19 @@
         <div ng-repeat="message in flash_messages track by $index" class="alert alert-success">[[message]]</div>
     </div>
 
+    <div ng-show="error_messages.length > 0">
+        <div ng-repeat="message in error_messages track by $index" class="alert alert-danger">[[message]]</div>
+    </div>
+
     <div ng-show="validation_messages.length > 0">
         <div ng-repeat="message in validation_messages track by $index" class="alert alert-danger">[[message]]</div>
     </div>
 
     <div ng-show="notifications.length > 0">
-        <div ng-repeat="notification in notifications track by $index" class="alert alert-success">[[notification.message]]</div>
+        <div ng-repeat="notification in notifications track by $index" class="alert alert-success message">
+            [[notification.message]]
+            <i ng-click="dismissNotification(notification)" class="fa fa-times"></i>
+        </div>
     </div>
 
     <h1>Add a new payer</h1>

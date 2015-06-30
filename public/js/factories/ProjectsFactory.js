@@ -85,7 +85,11 @@ app.factory('ProjectsFactory', function ($http) {
         /**
          * delete
          */
+        dismissNotification: function ($notification) {
+          var $url = $notification.path;
 
+          return $http.delete($url);
+        },
         removePayer: function ($payer_id) {
             var $url = 'delete/payer';
             var $data = {

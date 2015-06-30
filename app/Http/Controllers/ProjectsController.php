@@ -3,6 +3,7 @@
 use App\Http\Controllers\Controller;
 use App\Http\Requests;
 use App\Http\Requests\CreateProjectRequest;
+use App\Models\Notification;
 use App\Models\Payee;
 use App\Models\Project;
 use App\Repositories\ProjectsRepository;
@@ -85,13 +86,26 @@ class ProjectsController extends Controller
         $project->status = 'confirmed';
         $project->save();
 
+        $message = $project->payer->name . ' has confirmed your project ' . $project->description . '!';
+
+        //Create a notification in the database for the payee, in case they are not currently logged in
+        $notification = new Notification([
+            'message' => $message
+        ]);
+
+        $notification->user()->associate($project->payee->id);
+        $notification->save();
+
+
+
+
         //Pusher
         $pusher = new Pusher(env('PUSHER_PUBLIC_KEY'), env('PUSHER_SECRET_KEY'), env('PUSHER_APP_ID'));
 
         $data = [
             'payee_id' => $project->payee->id,
-            'project' => $project,
-            'message' => $project->payer->name . ' has confirmed your project ' . $project->description . '!'
+            'notification' => $notification,
+            'project' => $project
         ];
 
         $pusher->trigger('channel', 'confirmProject', $data);

@@ -19,9 +19,10 @@ var app = angular.module('projects');
             is_timing: false
         };
         $scope.selected = {};
-        $scope.flash_messages = [];
+        $scope.error_messages = [];
         $scope.validation_messages = [];
         $scope.feedback_messages = [];
+        $scope.notifications = notifications;
 
         /**
          * Pusher
@@ -39,7 +40,7 @@ var app = angular.module('projects');
          */
         channel.bind('confirmProject', function(data) {
             if ($scope.me.id === data.payee_id) {
-                $scope.flash_messages.push(data.message);
+                $scope.notifications.push(data.notification);
                 $scope.projects.push(data.project);
                 $scope.$apply();
             }
@@ -108,8 +109,7 @@ var app = angular.module('projects');
             $scope.validation_messages = [];
             ProjectsFactory.insertProject($scope.new_project.email, $scope.new_project.description, $scope.new_project.rate)
                 .then(function (response) {
-                    //$scope.projects.push(response.data)
-                    $scope.flash_messages.push('Your project is awaiting confirmation.');
+                    $scope.provideFeedback('Your project is awaiting confirmation.');
                 })
                 .catch(function (response) {
                     //Display the error messages to the user
@@ -253,7 +253,7 @@ var app = angular.module('projects');
                         $scope.provideFeedback('Project "' + $project.description + '" deleted.');
                     })
                     .catch(function (response) {
-                        $scope.flash_messages.push(response.data.error);
+                        $scope.error_messages.push(response.data.error);
                     });
             }
         };
@@ -269,7 +269,17 @@ var app = angular.module('projects');
                     $scope.declined_projects = _.without($scope.declined_projects, $project);
                 })
                 .catch(function (response) {
-                    $scope.flash_messages.push(response.data.error);
+                    $scope.error_messages.push(response.data.error);
+                });
+        };
+
+        $scope.dismissNotification = function ($notification) {
+            ProjectsFactory.dismissNotification($notification)
+                .then(function (response) {
+                    $scope.notifications = _.without($scope.notifications, $notification);
+                })
+                .catch(function (response) {
+                    $scope.error_messages.push(response.data.error);
                 });
         };
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Notification;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -73,13 +74,16 @@ class NotificationsController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return Response
+     * Delete the notification
+     * @param $id
+     * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
-        //
+        $notification = Notification::findOrFail($id);
+
+        $notification->delete();
+
+        return $this->responseNoContent();
     }
 }

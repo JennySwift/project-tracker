@@ -90,6 +90,7 @@ Route::controllers([
  */
 
 Route::resource('projects', 'ProjectsController', ['only' => ['show', 'store', 'update', 'destroy']]);
+Route::resource('notifications', 'NotificationsController', ['only' => ['show', 'destroy']]);
 Route::resource('payee', 'PayeeController', ['only' => ['store', 'destroy']]);
 Route::resource('payer', 'PayerController', ['only' => ['store', 'destroy']]);
 Route::resource('timers', 'TimersController', ['only' => ['destroy']]);
