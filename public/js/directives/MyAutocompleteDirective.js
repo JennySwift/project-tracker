@@ -73,6 +73,8 @@
 
                     $http.post($scope.url, $data).
                         success(function(response, status, headers, config) {
+                            //Highlight the letters that match what has been typed
+                            response = $scope.highlightLetters(response);
                             //Populate the dropdown
                             $scope.results = response;
                             //Show the dropdown
@@ -84,6 +86,19 @@
                             //todo: Can I access my provideFeedback method in my controller from here?
                             console.log("There was an error");
                         });
+                };
+
+                $scope.highlightLetters = function ($response) {
+                    var $typing = $scope.autocomplete.payer.toLowerCase();
+
+                    for (var i = 0; i < $response.length; i++) {
+                        var $name = $response[i].name;
+                        var $index = $name.toLowerCase().indexOf($typing);
+                        var $substr = $name.substr($index, $typing.length);
+                        var $html = $name.replace($substr, '<span class="highlight">' + $substr + '</span>');
+                        $response[i].name = $html;
+                    }
+                    return $response;
                 };
 
                 //todo: add extra functionality like Nishant did, such as highlighting the matched part of the result

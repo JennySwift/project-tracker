@@ -18,7 +18,7 @@
 
     <div class="angucomplete-dropdown" ng-show="showDropdown">
         <div ng-repeat="result in results" ng-mouseover="hoverItem($index)" ng-class="{'angucomplete-selected-item': $index == currentIndex}" class="angucomplete-dropdown-item">
-            <div>[[result.name]]</div>
+            <div ng-bind-html="result.name"></div>
         </div>
 
     </div>
