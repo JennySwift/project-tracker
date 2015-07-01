@@ -44,46 +44,12 @@
         </div>
     </div>
 
-
-
-
-
-    <div>
-        <autocomplete-Nishant
-            id="payer-autocomplete"
-            placeholder="Nishant's autocomplete"
-            pause="100"
-            selectedobject="selectedPayer"
-            url = "select/autocompletePayers"
-            searchfields="name"
-            titlefield="name"
-            minlength="1"
-            inputclass="form-control form-control-small"
-            matchclass="highlight"
-            postrequest="true"
-            width="300"/>
-    </div>
-
     <div>
         <autocomplete-Jenny
             placeholder="Choose existing payer or enter new email address"
-            selectedobject="selectedPayer"
             url = "select/autocompletePayers"
-            searchfields="name"
-            titlefield="name"
-            minlength="1"
-            matchclass="highlight"
-            postrequest="true"
             width="300"/>
     </div>
-
-
-
-
-
-
-
-
 
     <h1>Add a new payer</h1>
 
