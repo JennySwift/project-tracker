@@ -27,5 +27,9 @@
 <script type="text/javascript" src="js/controllers/controllers.js"></script>
 <script type="text/javascript" src="js/controllers/PayeeController.js"></script>
 <script type="text/javascript" src="js/controllers/PayerController.js"></script>
+<script type="text/javascript" src="js/controllers/AutocompleteController.js"></script>
 
 <script type="text/javascript" src="js/factories/ProjectsFactory.js"></script>
+
+<script type="text/javascript" src="js/directives/AutocompleteDirective.js"></script>
+<script type="text/javascript" src="js/directives/MyAutocompleteDirective.js"></script>

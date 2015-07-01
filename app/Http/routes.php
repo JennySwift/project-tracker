@@ -113,6 +113,7 @@ Route::post('delete/payer', 'PayeeController@removePayer');
 Route::post('update/markAsPaid', 'TimersController@markAsPaid');
 Route::post('update/stopProjectTimer', 'TimersController@stopProjectTimer');
 Route::post('update/declineNewProject', 'ProjectsController@declineNewProject');
+Route::post('select/autocompletePayers', 'AutocompleteController@payers');
 
 
 
