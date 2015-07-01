@@ -36,14 +36,7 @@
                 $scope.autocomplete = function ($keycode) {
                     if ($keycode === 13) {
                         //enter is pressed
-
-                        //Fill the input field with the correct value to complete the autocomplete
-                        var $input_field = elem.find('input');
-                        $($input_field).val($scope.results[$scope.currentIndex].name);
-                        $scope.autocomplete.payers = $scope.results[$scope.currentIndex].name;
-
-                        //Hide the dropdown
-                        $scope.showDropdown = false;
+                        $scope.chooseItem();
                     }
                     else if ($keycode === 38) {
                         //up arrow is pressed
@@ -61,6 +54,26 @@
                         //Not enter, up or down arrow
                         $scope.search();
                     }
+                };
+
+                /**
+                 * Fill the input field with the chosen item from the dropdown.
+                 * It can be chosen by pressing enter, or by clicking.
+                 */
+                $scope.chooseItem = function ($index) {
+                    var $input_field = elem.find('input');
+
+                    if ($index !== undefined) {
+                        //Item was chosen by clicking, not by pressing enter
+                        $scope.currentIndex = $index;
+                    }
+
+                    //Fill the input field with the correct value to complete the autocomplete
+                    $($input_field).val($scope.results[$scope.currentIndex].name);
+                    $scope.autocomplete.payers = $scope.results[$scope.currentIndex].name;
+
+                    //Hide the dropdown
+                    $scope.showDropdown = false;
                 };
 
                 /**
@@ -96,12 +109,12 @@
                         var $index = $name.toLowerCase().indexOf($typing);
                         var $substr = $name.substr($index, $typing.length);
                         var $html = $name.replace($substr, '<span class="highlight">' + $substr + '</span>');
-                        $response[i].name = $html;
+                        $response[i].html = $html;
                     }
                     return $response;
                 };
 
-                //todo: add extra functionality like Nishant did, such as highlighting the matched part of the result
+                //Todo: get hover working on Chrome, and make items clickable
 
                 //$scope.hoverItem = function(index) {
                 //    $scope.currentIndex = index;
