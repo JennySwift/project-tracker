@@ -14,7 +14,7 @@
             </tr>
 
             <tr>
-                <td>[[selected.project.payer.name]] <img ng-src="[[selected.project.payer.gravatar]]" alt=""></td>
+                <td>[[selected.project.payer.name]] <img ng-src="[[selected.project.payer.gravatar]]" class="gravatar" alt=""></td>
                 <td>[[selected.project.description]]</td>
                 <td>$[[selected.project.rate_per_hour]]</td>
                 <td>[[selected.project.total_time_formatted.hours]]:[[selected.project.total_time_formatted.minutes]]:[[selected.project.total_time_formatted.seconds]]</td>
