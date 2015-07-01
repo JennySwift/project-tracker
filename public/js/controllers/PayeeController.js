@@ -16,7 +16,8 @@ var app = angular.module('projects');
             popups: {}
         };
         $scope.project_popup = {
-            is_timing: false
+            is_timing: false,
+            timer: {}
         };
         $scope.selected = {};
         $scope.error_messages = [];
@@ -60,36 +61,67 @@ var app = angular.module('projects');
          * watches
          */
 
-        $scope.$watch('project_popup.timer_time.seconds', function (newValue, oldValue) {
+        $scope.$watch('project_popup.timer.time.seconds', function (newValue, oldValue) {
             if (newValue < 10) {
-                $scope.project_popup.timer_time.formatted_seconds = '0' + newValue;
+                $scope.project_popup.timer.time.formatted_seconds = '0' + newValue;
             }
             else {
-                $scope.project_popup.timer_time.formatted_seconds = newValue;
+                $scope.project_popup.timer.time.formatted_seconds = newValue;
+            }
+
+            //Update the JS price for the timer that is going
+            //if (newValue) {
+            //    $scope.calculateTimerPrice();
+            //}
+        });
+
+        $scope.$watch('project_popup.timer.time.minutes', function (newValue, oldValue) {
+            if (newValue < 10) {
+                $scope.project_popup.timer.time.formatted_minutes = '0' + newValue;
+            }
+            else {
+                $scope.project_popup.timer.time.formatted_minutes = newValue;
+            }
+
+            //Update the JS price for the timer that is going
+            if (newValue) {
+                $scope.calculateTimerPrice();
             }
         });
 
-        $scope.$watch('project_popup.timer_time.minutes', function (newValue, oldValue) {
-            if (newValue < 10) {
-                $scope.project_popup.timer_time.formatted_minutes = '0' + newValue;
-            }
-            else {
-                $scope.project_popup.timer_time.formatted_minutes = newValue;
-            }
-        });
+        /**
+         * For updating the price of the timer in the project popup as it is in progress
+         */
+        $scope.calculateTimerPrice = function () {
+            var $rate = parseFloat($scope.selected.project.rate_per_hour);
+            var $hours = $scope.project_popup.timer.time.hours;
+            var $minutes = $scope.project_popup.timer.time.minutes;
+            var $price = 0;
 
-        $scope.$watch('project_popup.timer_time.hours', function (newValue, oldValue) {
+            $price += $rate * $hours;
+            $price += $rate / 60 * $minutes;
+
+            $scope.project_popup.timer.price = $price;
+        };
+
+        $scope.$watch('project_popup.timer.time.hours', function (newValue, oldValue) {
             if (newValue < 10) {
-                $scope.project_popup.timer_time.formatted_hours = '0' + newValue;
+                $scope.project_popup.timer.time.formatted_hours = '0' + newValue;
             }
             else {
-                $scope.project_popup.timer_time.formatted_hours = newValue;
+                $scope.project_popup.timer.time.formatted_hours = newValue;
             }
         });
 
         $scope.$watch('selected.project.price', function (newValue, oldValue) {
             if (newValue) {
                 $scope.selected.project.formatted_price = parseFloat(newValue).toFixed(2);
+            }
+        });
+
+        $scope.$watch('project_popup.timer.price', function (newValue, oldValue) {
+            if (newValue) {
+                $scope.project_popup.timer.formatted_price = parseFloat(newValue).toFixed(2);
             }
         });
 
@@ -134,10 +166,10 @@ var app = angular.module('projects');
             $scope.project_popup.is_timing = true;
 
             $scope.counter = $interval(function () {
-                if ($scope.project_popup.timer_time.seconds < 59) {
-                    $scope.project_popup.timer_time.seconds+= 1;
+                if ($scope.project_popup.timer.time.seconds < 59) {
+                    $scope.project_popup.timer.time.seconds+= 1;
                 }
-                else if ($scope.project_popup.timer_time.minutes < 59) {
+                else if ($scope.project_popup.timer.time.minutes < 59) {
                     $scope.newMinute();
                 }
                 else {
@@ -332,9 +364,9 @@ var app = angular.module('projects');
                     $time = $time - ($minutes * 60);
                     var $seconds = $time;
 
-                    $scope.project_popup.timer_time.hours = $hours;
-                    $scope.project_popup.timer_time.minutes = $minutes;
-                    $scope.project_popup.timer_time.seconds = $seconds;
+                    $scope.project_popup.timer.time.hours = $hours;
+                    $scope.project_popup.timer.time.minutes = $minutes;
+                    $scope.project_popup.timer.time.seconds = $seconds;
 
                     //Resume the timer
                     $scope.countUp();
@@ -357,25 +389,26 @@ var app = angular.module('projects');
         };
 
         $scope.resetTimer = function () {
-            $scope.project_popup.timer_time = {
+            $scope.project_popup.timer.time = {
                 hours: 0,
                 minutes: 0,
                 seconds: 0,
                 formatted_seconds: '00',
                 formatted_minutes: '00',
-                formatted_hours: '00'
+                formatted_hours: '00',
             };
+            $scope.project_popup.timer.price = '0';
         };
 
         $scope.newMinute = function () {
-            $scope.project_popup.timer_time.seconds = 0;
-            $scope.project_popup.timer_time.minutes+= 1;
+            $scope.project_popup.timer.time.seconds = 0;
+            $scope.project_popup.timer.time.minutes+= 1;
         };
 
         $scope.newHour = function () {
-            $scope.project_popup.timer_time.seconds = 0;
-            $scope.project_popup.timer_time.minutes = 0;
-            $scope.project_popup.timer_time.hours+= 1;
+            $scope.project_popup.timer.time.seconds = 0;
+            $scope.project_popup.timer.time.minutes = 0;
+            $scope.project_popup.timer.time.hours+= 1;
         };
 
         /**
