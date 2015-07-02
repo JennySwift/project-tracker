@@ -66,9 +66,19 @@ class ProjectsController extends Controller
      */
     public function store(CreateProjectRequest $request)
     {
-        // @TODO Fix the error handling in Angular now that you have validation (check for status code 422)
+        $payer_email = $request->get('payer_email');
+
+        //Check if the email is for a new payer, rather than a previous payer of the payee.
+        //If it is, add the row to the payee_payer pivot table before creating the project.
+        //Todo: If it is a new payer, do the appropriate validation errors
+        //todo: (different for if the new payer email field is blank vs the previous payer input)
+        if ($request->get('new_payer')) {
+            Payee::addPayer($payer_email);
+        }
+
+        //Create the project
         return $this->projectsRepository->createProject(
-            $request->get('payer_email'),
+            $payer_email,
             $request->get('description'),
             $request->get('rate')
         );

@@ -445,6 +445,25 @@ li {
       background-color: lightblue;
       color: #ffffff; }
 
+.btn-switch {
+  display: flex;
+  border: 1px solid #777;
+  justify-content: space-around;
+  border-radius: 5px; }
+  .btn-switch > div {
+    flex-grow: 1;
+    text-align: center;
+    padding: 7px;
+    cursor: pointer;
+    -webkit-transition: all linear .5s;
+    transition: all linear .5s; }
+    .btn-switch > div:hover {
+      background: #e6e6e6; }
+    .btn-switch > div:not(:last-child) {
+      border-right: 1px solid #777; }
+    .btn-switch > div.selected {
+      background: #5cb85c; }
+
 body.browser-height {
   box-sizing: border-box; }
 

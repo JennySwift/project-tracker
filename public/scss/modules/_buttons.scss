@@ -1,0 +1,27 @@
+.btn-switch {
+    display: flex;
+    border: 1px solid #777;
+    justify-content: space-around;
+    border-radius: 5px;
+    > div {
+        flex-grow: 1;
+        text-align: center;
+        padding: 7px;
+        cursor: pointer;
+        &:hover {
+            background: #e6e6e6;
+        }
+        &:not(:last-child) {
+            border-right: 1px solid #777;
+        }
+
+        //The transitioning on click
+        -webkit-transition:all linear .5s;
+        transition:all linear .5s;
+        &.selected {
+            background: #5cb85c;
+//            color: #fff;
+        }
+    }
+}
+

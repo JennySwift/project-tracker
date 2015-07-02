@@ -15,12 +15,26 @@ app.factory('ProjectsFactory', function ($http) {
          * insert
          */
 
-        insertProject: function ($payer_email, $description, $rate) {
+        insertProject: function ($new_project) {
             var $url = '/projects';
+            var $new_payer;
+            var $payer_email;
+
+            if ($new_project.new_payer.email !== '') {
+                //It is a new payer
+                $new_payer = true;
+                $payer_email = $new_project.new_payer.email;
+            }
+            else {
+                $new_payer = false;
+                $payer_email = $new_project.previous_payer.email;
+            }
+
             var $data = {
+                new_payer: $new_payer,
                 payer_email: $payer_email,
-                description: $description,
-                rate: $rate
+                description: $new_project.description,
+                rate: $new_project.rate
             };
 
             return $http.post($url, $data);

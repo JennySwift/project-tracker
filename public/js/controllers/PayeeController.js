@@ -11,7 +11,14 @@ var app = angular.module('projects');
         $scope.declined_projects = declined_projects;
         $scope.me = me;
         $scope.payers = payers;
-        $scope.new_project = {};
+        $scope.new_project = {
+            previous_payer: {
+                email: ''
+            },
+            new_payer: {
+                email: ''
+            }
+        };
         $scope.show = {
             popups: {}
         };
@@ -44,6 +51,8 @@ var app = angular.module('projects');
                 $scope.notifications.push(data.notification);
                 $scope.projects.push(data.project);
                 $scope.$apply();
+
+                //Todo: Add the payer to the payee's payers if they are not there already
             }
         });
 
@@ -139,7 +148,7 @@ var app = angular.module('projects');
                 return false;
             }
             $scope.validation_messages = [];
-            ProjectsFactory.insertProject($scope.new_project.email, $scope.new_project.description, $scope.new_project.rate)
+            ProjectsFactory.insertProject($scope.new_project)
                 .then(function (response) {
                     $scope.provideFeedback('Your project is awaiting confirmation.');
                 })
@@ -179,14 +188,14 @@ var app = angular.module('projects');
             }, 1000);
         };
 
-        $scope.addPayer = function ($keycode) {
-            if ($keycode !== 13) {
-                return false;
-            }
-            ProjectsFactory.addPayer().then(function (response) {
-                $scope.payers = response.data;
-            });
-        };
+        //$scope.addPayer = function ($keycode) {
+        //    if ($keycode !== 13) {
+        //        return false;
+        //    }
+        //    ProjectsFactory.addPayer().then(function (response) {
+        //        $scope.payers = response.data;
+        //    });
+        //};
 
         /**
          * update
@@ -386,6 +395,15 @@ var app = angular.module('projects');
                 $scope.show.popups[$popup] = false;
             }
             $scope.stopJsTimer();
+        };
+
+        $scope.test = function () {
+            console.log('hi');
+        };
+
+        $scope.switchButton = function ($event) {
+            $(".selected").removeClass('selected');
+            $($event.target).addClass('selected');
         };
 
         $scope.resetTimer = function () {

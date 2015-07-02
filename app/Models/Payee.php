@@ -48,4 +48,19 @@ class Payee extends User
             ->where('status', 'declined');
     }
 
+
+    public static function addPayer($payer_email)
+    {
+        // @TODO This step could be improved to remove the double-query effect
+        $user = Auth::user();
+        $payee = Payee::findOrFail($user->id);
+
+        $payer = Payer::whereEmail($payer_email)->firstOrFail();
+
+        $payee->payers()->attach($payer->id);
+        $payee->save();
+
+        return $payee->payers;
+    }
+
 }

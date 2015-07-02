@@ -33,6 +33,8 @@ class PayeeController extends Controller {
      * so that the user can create a project with that person as payer.
      * Return the user's payers
      *
+     * Actually I've moved the method to the Payee model so I may not need it here at all.
+     *
      * // @TODO Should be a PUT request to /users/{user}/payers/{payer} and return the payer object.
      *
      * @param Request $request
@@ -42,16 +44,7 @@ class PayeeController extends Controller {
     {
         $payer_email = $request->get('payer_email');
 
-        // @TODO This step could be improved to remove the double-query effect
-        $user = Auth::user();
-        $payee = Payee::findOrFail($user->id);
-
-        $payer = Payer::whereEmail($payer_email)->firstOrFail();
-
-        $payee->payers()->attach($payer->id);
-        $payee->save();
-
-        return $payee->payers;
+        return Payee::addPayer($payer_email);
     }
 
     /**

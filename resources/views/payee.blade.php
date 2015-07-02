@@ -44,16 +44,29 @@
         </div>
     </div>
 
-    <h1>Add a new payer</h1>
+    {{--<h1>Add a new payer</h1>--}}
 
-    <div class="flex margin-bottom input-container">
-        <input ng-keyup="addPayer($event.keyCode)" type="text" placeholder="enter payer's email" id="new-payer-email"/>
-        <button ng-click="addPayer(13)" class="btn btn-success">Add payer</button>
-    </div>
+    {{--<div class="flex margin-bottom input-container">--}}
+        {{--<input ng-keyup="addPayer($event.keyCode)" type="text" placeholder="enter payer's email" id="new-payer-email"/>--}}
+        {{--<button ng-click="addPayer(13)" class="btn btn-success">Add payer</button>--}}
+    {{--</div>--}}
 
     <h1>Create a new project</h1>
 
+
+
+    <input id="setbtn" type="button" value="set" ng-click="myVar='my-class'">
+    <input class="base-class" ng-class="myVar" id="clearbtn" type="button" value="clear" ng-click="myVar=''">
+    <br>
+
+
+
     <div class="margin-bottom input-container">
+
+        <div class="btn-switch">
+            <div ng-click="switchButton($event)">previous payer</div>
+            <div ng-click="switchButton($event)">new payer</div>
+        </div>
 
         <div class="flex margin-bottom-md">
 
@@ -64,9 +77,11 @@
                         querydatabase = false
                         payers = 'payers'
                         callback = "provideFeedback('hi there!')"
-                        selecteditem = "new_project"
+                        selecteditem = "new_project.previous_payer"
                         width="300"/>
             </div>
+
+            <input ng-model="new_project.new_payer.email" type="text" placeholder="new payer's email"/>
 
             {{--<select ng-model="new_project.email" title="something">--}}
                 {{--<option ng-repeat="payer in payers" ng-value="payer.email">[[payer.name]]</option>--}}
