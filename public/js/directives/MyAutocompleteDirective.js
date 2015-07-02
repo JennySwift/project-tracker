@@ -73,6 +73,10 @@
                     $scope.autocomplete.payers = $scope.results[$scope.currentIndex].name;
 
                     //Hide the dropdown
+                    $scope.hideDropdown();
+                };
+
+                $scope.hideDropdown = function () {
                     $scope.showDropdown = false;
                 };
 
@@ -102,6 +106,15 @@
                 };
 
                 $scope.highlightLetters = function ($response) {
+                    //If the input field is empty, just return $response as it is, unmodified
+                    //if (!$scope.autocomplete.payer || $scope.autocomplete.payer === '') {
+                    //    return $response;
+                    //}
+
+                    if (!$scope.autocomplete.payer) {
+                        $scope.autocomplete.payer = '';
+                    }
+
                     var $typing = $scope.autocomplete.payer.toLowerCase();
 
                     for (var i = 0; i < $response.length; i++) {

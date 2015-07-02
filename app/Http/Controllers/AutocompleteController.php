@@ -7,6 +7,7 @@ use App\Models\Payee;
 use Illuminate\Http\Request;
 use DB;
 use Auth;
+use Debugbar;
 
 /**
  * Class AutocompleteController
@@ -18,6 +19,12 @@ class AutocompleteController extends Controller {
     {
         $typing = '%' . $request->get('typing') . '%';
         $payee = Payee::find(Auth::user()->id);
+
+        if ($typing === '%%') {
+            //The input has been focused but nothing has been typed. Return all the payers.
+            return $payee->payers;
+        }
+
         return $payee->payers()->where('name', 'LIKE', $typing)->get();
     }
 
