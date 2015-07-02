@@ -8,6 +8,9 @@
 
 .angucomplete-container {
     position: relative;
+    input {
+        width: 100%;
+    }
     .angucomplete-dropdown {
         border-color: #ececec;
         border-width: 1px;

@@ -365,6 +365,11 @@ li {
 
 #payee, #payer {
   max-width: 630px; }
+  #payee #toggle-new-project-btn, #payer #toggle-new-project-btn {
+    width: 100%;
+    margin-bottom: 20px;
+    background: #f5f1f2;
+    color: #777; }
   #payee .flex, #payer .flex {
     display: flex;
     justify-content: center;
@@ -375,10 +380,30 @@ li {
     margin-bottom: 30px; }
   #payee input, #payer input {
     background: white; }
-  #payee .input-container, #payer .input-container {
+  #payee .new-project-container, #payer .new-project-container {
     background: #F5F1F2;
     border-radius: 10px;
-    padding: 34px 0; }
+    padding: 34px 16px; }
+    #payee .new-project-container .input-container, #payer .new-project-container .input-container {
+      display: flex;
+      flex-direction: column;
+      flex-wrap: wrap;
+      margin-bottom: 20px; }
+      #payee .new-project-container .input-container input, #payer .new-project-container .input-container input {
+        margin-bottom: 10px; }
+    #payee .new-project-container button, #payer .new-project-container button {
+      width: 100%; }
+  #payee .transition, #payer .transition {
+    position: relative;
+    bottom: 0;
+    z-index: 99999999; }
+  #payee .transition.ng-hide-add.ng-hide-add-active,
+  #payee .transition.ng-hide-remove.ng-hide-remove-active, #payer .transition.ng-hide-add.ng-hide-add-active,
+  #payer .transition.ng-hide-remove.ng-hide-remove-active {
+    -webkit-transition: all linear .3s;
+    transition: all linear .3s; }
+  #payee .transition.ng-hide, #payer .transition.ng-hide {
+    bottom: 400px; }
 
 .gravatar {
   border-radius: 23px; }
@@ -425,6 +450,8 @@ li {
 /* AutoComplete CSS */
 .angucomplete-container {
   position: relative; }
+  .angucomplete-container input {
+    width: 100%; }
   .angucomplete-container .angucomplete-dropdown {
     border-color: #ececec;
     border-width: 1px;
@@ -447,9 +474,12 @@ li {
 
 .btn-switch {
   display: flex;
-  border: 1px solid #777;
+  border: 3px solid #777;
   justify-content: space-around;
-  border-radius: 5px; }
+  border-radius: 5px;
+  width: 207px;
+  margin: auto;
+  margin-bottom: 24px; }
   .btn-switch > div {
     flex-grow: 1;
     text-align: center;
@@ -460,9 +490,10 @@ li {
     .btn-switch > div:hover {
       background: #e6e6e6; }
     .btn-switch > div:not(:last-child) {
-      border-right: 1px solid #777; }
+      border-right: 3px solid #777; }
     .btn-switch > div.selected {
-      background: #5cb85c; }
+      background: #777;
+      color: #fff; }
 
 body.browser-height {
   box-sizing: border-box; }

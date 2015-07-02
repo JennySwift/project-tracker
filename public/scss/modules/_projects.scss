@@ -1,5 +1,11 @@
 #payee, #payer {
     max-width: 630px;
+    #toggle-new-project-btn {
+        width: 100%;
+        margin-bottom: 20px;
+        background: #f5f1f2;
+        color: #777;
+    }
     .flex {
       display: flex;
       justify-content: center;
@@ -14,11 +20,43 @@
     input {
       background: white;
     }
-    .input-container {
+    .new-project-container {
       background: #F5F1F2;
       border-radius: 10px;
-      padding: 34px 0;
+      padding: 34px 16px;
+        .input-container {
+            display: flex;
+            flex-direction: column;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+            input {
+                margin-bottom: 10px;
+            }
+        }
+        button {
+            width: 100%;
+        }
     }
+
+    //Transition for showing and hiding the new project view
+    .transition {
+//        opacity: 1;
+//        height: 300px;
+        position: relative;
+        bottom: 0;
+        z-index: 99999999;
+    }
+    .transition.ng-hide-add.ng-hide-add-active,
+    .transition.ng-hide-remove.ng-hide-remove-active {
+        -webkit-transition: all linear .3s;
+        transition: all linear .3s;
+    }
+    .transition.ng-hide {
+//        opacity: 0;
+//        height: 0px;
+        bottom: 400px;
+    }
+
 }
 
 .gravatar {

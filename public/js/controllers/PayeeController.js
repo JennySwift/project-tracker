@@ -20,7 +20,8 @@ var app = angular.module('projects');
             }
         };
         $scope.show = {
-            popups: {}
+            popups: {},
+            new_project: false
         };
         $scope.project_popup = {
             is_timing: false,
@@ -397,14 +398,27 @@ var app = angular.module('projects');
             $scope.stopJsTimer();
         };
 
-        $scope.test = function () {
-            console.log('hi');
+        $scope.changeNewProjectView = function ($new_view) {
+            if ($new_view === 'new') {
+                $scope.new_project.view = 'new_payer';
+            }
+            else {
+                $scope.new_project.view = 'previous_payer';
+            }
         };
 
-        $scope.switchButton = function ($event) {
-            $(".selected").removeClass('selected');
-            $($event.target).addClass('selected');
+        $scope.toggleNewProjectView = function () {
+            $scope.show.new_project = !$scope.show.new_project;
+            if ($scope.show.new_project) {
+                $scope.changeNewProjectView('previous');
+            }
         };
+
+        //$scope.switchButton = function ($event) {
+        //    $(".selected").removeClass('selected');
+        //    $($event.target).addClass('selected');
+        //    $scope.changeNewProjectView($new_view);
+        //};
 
         $scope.resetTimer = function () {
             $scope.project_popup.timer.time = {

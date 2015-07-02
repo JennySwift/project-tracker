@@ -51,26 +51,18 @@
         {{--<button ng-click="addPayer(13)" class="btn btn-success">Add payer</button>--}}
     {{--</div>--}}
 
-    <h1>Create a new project</h1>
+    <button ng-click="toggleNewProjectView()" id="toggle-new-project-btn" class="btn">New project</button>
 
-
-
-    <input id="setbtn" type="button" value="set" ng-click="myVar='my-class'">
-    <input class="base-class" ng-class="myVar" id="clearbtn" type="button" value="clear" ng-click="myVar=''">
-    <br>
-
-
-
-    <div class="margin-bottom input-container">
+    <div ng-show="show.new_project" class="transition margin-bottom new-project-container">
 
         <div class="btn-switch">
-            <div ng-click="switchButton($event)">previous payer</div>
-            <div ng-click="switchButton($event)">new payer</div>
+            <div ng-class="{'selected': new_project.view === 'previous_payer'}" ng-click="changeNewProjectView('previous')">previous payer</div>
+            <div ng-class="{'selected': new_project.view === 'new_payer'}" ng-click="changeNewProjectView('new')">new payer</div>
         </div>
 
-        <div class="flex margin-bottom-md">
+        <div class="input-container">
 
-            <div>
+            <div ng-show="new_project.view === 'previous_payer'">
                 <autocomplete-Jenny
                         placeholder="previous payer"
                         url = "select/autocompletePayers"
@@ -81,7 +73,7 @@
                         width="300"/>
             </div>
 
-            <input ng-model="new_project.new_payer.email" type="text" placeholder="new payer's email"/>
+            <input ng-show="new_project.view === 'new_payer'" ng-model="new_project.new_payer.email" type="text" placeholder="new payer's email"/>
 
             {{--<select ng-model="new_project.email" title="something">--}}
                 {{--<option ng-repeat="payer in payers" ng-value="payer.email">[[payer.name]]</option>--}}
@@ -92,9 +84,7 @@
 
         </div>
 
-        <div class="flex">
-            <button ng-click="insertProject(13)" class="btn btn-success">Create project</button>
-        </div>
+        <button ng-click="insertProject(13)" class="btn btn-success">Create project</button>
 
     </div>
 
