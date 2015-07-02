@@ -44,15 +44,6 @@
         </div>
     </div>
 
-    <div>
-        <autocomplete-Jenny
-            placeholder="Choose existing payer or enter new email address"
-            url = "select/autocompletePayers"
-            querydatabase = false
-            payers = 'payers'
-            width="300"/>
-    </div>
-
     <h1>Add a new payer</h1>
 
     <div class="flex margin-bottom input-container">
@@ -65,11 +56,25 @@
     <div class="margin-bottom input-container">
 
         <div class="flex margin-bottom-md">
-            <select ng-model="new_project.email" title="something">
-                <option ng-repeat="payer in payers" ng-value="payer.email">[[payer.name]]</option>
-            </select>
+
+            <div>
+                <autocomplete-Jenny
+                        placeholder="previous payer"
+                        url = "select/autocompletePayers"
+                        querydatabase = false
+                        payers = 'payers'
+                        callback = "provideFeedback('hi there!')"
+                        selecteditem = "new_project"
+                        width="300"/>
+            </div>
+
+            {{--<select ng-model="new_project.email" title="something">--}}
+                {{--<option ng-repeat="payer in payers" ng-value="payer.email">[[payer.name]]</option>--}}
+            {{--</select>--}}
+
             <input ng-model="new_project.description" type="text" placeholder="description">
             <input ng-model="new_project.rate" ng-keyup="insertProject($event.keyCode)" type="text" placeholder="rate">
+
         </div>
 
         <div class="flex">

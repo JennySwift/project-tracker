@@ -22,7 +22,9 @@
                 "matchClass": "@matchclass",
                 "width" : "@width",
                 "queryDatabase": "@querydatabase",
-                "payers": "=payers"
+                "payers": "=payers",
+                "selectedItem": "=selecteditem",
+                "callback": "&callback"
             },
             templateUrl: 'js/directives/MyAutocompleteTemplate.php',
             link: function($scope, elem, attrs) {
@@ -76,6 +78,9 @@
 
                     //Hide the dropdown
                     $scope.hideDropdown();
+
+                    //Update the controller $scope
+                    $scope.selectedItem = $scope.results[$scope.currentIndex];
                 };
 
                 $scope.hideDropdown = function () {
@@ -138,10 +143,6 @@
                 };
 
                 $scope.highlightLetters = function ($response) {
-                    //if (!$scope.inputValue) {
-                    //    $scope.inputValue = '';
-                    //}
-
                     var $typing = $scope.inputValue.toLowerCase();
 
                     for (var i = 0; i < $response.length; i++) {
