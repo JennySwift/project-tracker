@@ -423,42 +423,27 @@ li {
     padding: 8px 0; } }
 
 /* AutoComplete CSS */
-.angucomplete-holder, .angucomplete-container {
+.angucomplete-container {
   position: relative; }
-
-.angucomplete-dropdown {
-  border-color: #ececec;
-  border-width: 1px;
-  border-style: solid;
-  border-radius: 2px;
-  width: 250px;
-  padding: 6px;
-  cursor: pointer;
-  z-index: 9999;
-  position: absolute;
-    /*top: 32px;
-
-    left: 0px;
-
-    */
-  margin-top: -6px;
-  background-color: #ffffff; }
-
-.angucomplete-searching {
-  color: #acacac;
-  font-size: 14px; }
-
-.angucomplete-description {
-  font-size: 14px; }
-
-.angucomplete-row, .angucomplete-dropdown-item {
-  padding: 5px;
-  color: #000000;
-  margin-bottom: 4px; }
-
-.angucomplete-selected-row, .angucomplete-row:hover, .angucomplete-selected-item, .highlight {
-  background-color: lightblue;
-  color: #ffffff; }
+  .angucomplete-container .angucomplete-dropdown {
+    border-color: #ececec;
+    border-width: 1px;
+    border-style: solid;
+    border-radius: 2px;
+    width: 250px;
+    padding: 6px;
+    cursor: pointer;
+    z-index: 9999;
+    position: absolute;
+    margin-top: -6px;
+    background-color: #ffffff; }
+    .angucomplete-container .angucomplete-dropdown .angucomplete-dropdown-item {
+      padding: 5px;
+      color: #000000;
+      margin-bottom: 4px; }
+    .angucomplete-container .angucomplete-dropdown .angucomplete-selected-item, .angucomplete-container .angucomplete-dropdown .highlight {
+      background-color: lightblue;
+      color: #ffffff; }
 
 body.browser-height {
   box-sizing: border-box; }
