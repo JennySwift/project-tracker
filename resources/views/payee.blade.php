@@ -48,6 +48,8 @@
         <autocomplete-Jenny
             placeholder="Choose existing payer or enter new email address"
             url = "select/autocompletePayers"
+            querydatabase = false
+            payers = 'payers'
             width="300"/>
     </div>
 

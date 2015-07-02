@@ -21,12 +21,14 @@
                 "minLengthUser": "@minlength",
                 "matchClass": "@matchclass",
                 "width" : "@width",
-                "postRequestUser": "@postrequest"
+                "queryDatabase": "@querydatabase",
+                "payers": "=payers"
             },
             templateUrl: 'js/directives/MyAutocompleteTemplate.php',
             link: function($scope, elem, attrs) {
                 $scope.currentIndex = 1;
                 $scope.showDropdown = false;
+                $scope.inputValue = '';
 
                 /**
                  * Act on keypress for input field
@@ -70,7 +72,7 @@
 
                     //Fill the input field with the correct value to complete the autocomplete
                     $($input_field).val($scope.results[$scope.currentIndex].name);
-                    $scope.autocomplete.payers = $scope.results[$scope.currentIndex].name;
+                    $scope.inputValue = $scope.results[$scope.currentIndex].name;
 
                     //Hide the dropdown
                     $scope.hideDropdown();
@@ -81,23 +83,38 @@
                 };
 
                 /**
-                 * Query the database
+                 * Search the database or the JS data
                  */
                 $scope.search = function () {
+                    if ($scope.queryDatabase && $scope.queryDatabase !== 'false') {
+                        $scope.searchDatabase();
+                    }
+                    else {
+                        $scope.searchLocal();
+                    }
+                };
+
+                /**
+                 * Search JS data
+                 */
+                $scope.searchLocal = function () {
+                    var $results = _.filter($scope.payers, function ($payer) {
+                        return $payer.name.toLowerCase().indexOf($scope.inputValue.toLowerCase()) !== -1;
+                    });
+                    $scope.dealWithResults($results);
+                };
+
+                /**
+                 * Query the database
+                 */
+                $scope.searchDatabase = function () {
                     var $data = {
-                        typing: $scope.autocomplete.payer
+                        typing: $scope.inputValue
                     };
 
                     $http.post($scope.url, $data).
                         success(function(response, status, headers, config) {
-                            //Highlight the letters that match what has been typed
-                            response = $scope.highlightLetters(response);
-                            //Populate the dropdown
-                            $scope.results = response;
-                            //Show the dropdown
-                            $scope.showDropdown = true;
-                            //Select the first item
-                            $scope.currentIndex = 0;
+                            $scope.dealWithResults(response);
                         }).
                         error(function(data, status, headers, config) {
                             //todo: Can I access my provideFeedback method in my controller from here?
@@ -105,17 +122,27 @@
                         });
                 };
 
+                /**
+                 * We have the data, from either the database or the JS. Deal with it.
+                 * @param $results
+                 */
+                $scope.dealWithResults = function ($results) {
+                    //Highlight the letters that match what has been typed
+                    $results = $scope.highlightLetters($results);
+                    //Populate the dropdown
+                    $scope.results = $results;
+                    //Show the dropdown
+                    $scope.showDropdown = true;
+                    //Select the first item
+                    $scope.currentIndex = 0;
+                };
+
                 $scope.highlightLetters = function ($response) {
-                    //If the input field is empty, just return $response as it is, unmodified
-                    //if (!$scope.autocomplete.payer || $scope.autocomplete.payer === '') {
-                    //    return $response;
+                    //if (!$scope.inputValue) {
+                    //    $scope.inputValue = '';
                     //}
 
-                    if (!$scope.autocomplete.payer) {
-                        $scope.autocomplete.payer = '';
-                    }
-
-                    var $typing = $scope.autocomplete.payer.toLowerCase();
+                    var $typing = $scope.inputValue.toLowerCase();
 
                     for (var i = 0; i < $response.length; i++) {
                         var $name = $response[i].name;
