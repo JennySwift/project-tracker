@@ -142,6 +142,8 @@ class TimersController extends Controller
 
         $data = [
             'payer_id' => $project->payer_id,
+            'project' => $project,
+            'timer' => $timer,
             'notification' => $notification,
         ];
 

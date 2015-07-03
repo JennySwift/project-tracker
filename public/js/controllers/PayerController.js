@@ -34,13 +34,31 @@ var app = angular.module('projects');
 
         var channel = pusher.subscribe('channel');
 
+        /**
+         * A payee has started a timer with the user
+         */
         channel.bind('startTimer', function(data) {
             if ($scope.me.id === data.payer_id) {
                 $scope.notifications.push(data.notification);
+
+                //Add the timer to the JS array
+                //(if the payer has the relevant project popup open)
+                //and start the timer for the payer
+                //todo: this could be more accurate by starting the timer
+                //todo: based on the start time of the timer in the database
+                if ($scope.show.popups.project && $scope.selected.project.id === data.project.id) {
+                    $scope.resetTimer();
+                    $scope.selected.project.timers.push(data.timer);
+                    $scope.countUp();
+                }
+
                 $scope.$apply();
             }
         });
 
+        /**
+         * A payee has stopped a timer with the user
+         */
         channel.bind('stopTimer', function(data) {
             if ($scope.me.id === data.payer_id) {
                 $scope.notifications.push(data.notification);
@@ -48,6 +66,9 @@ var app = angular.module('projects');
             }
         });
 
+        /**
+         * A payee has marked all the user's timers as paid
+         */
         channel.bind('markAsPaid', function(data) {
             if ($scope.me.id === data.payer_id) {
                 $scope.notifications.push(data.notification);
@@ -60,6 +81,9 @@ var app = angular.module('projects');
             }
         });
 
+        /**
+         * A payee has requested to start a new project with the user
+         */
         channel.bind('insertProject', function(data) {
             if ($scope.me.id === data.payer_id) {
                 $scope.project_requests.push(data.project);
