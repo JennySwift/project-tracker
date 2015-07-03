@@ -51,6 +51,12 @@
         {{--<button ng-click="addPayer(13)" class="btn btn-success">Add payer</button>--}}
     {{--</div>--}}
 
+    <popup
+        placeholder="previous payer"
+        width="300"
+        show="show.popups.project">
+    </popup>
+
     <button ng-click="toggleNewProjectView()" id="toggle-new-project-btn" class="btn">New project</button>
 
     <div ng-show="show.new_project" class="transition margin-bottom new-project-container">
@@ -134,7 +140,11 @@
             <td ng-click="showProjectPopup(project)" class="pointer">
                 [[project.total_time_formatted.hours]]:[[project.total_time_formatted.minutes]]:[[project.total_time_formatted.seconds]]
             </td>
+
+            {{--Nishant :), showProjectPopup is now in my directive instead of my controller,
+            so how do I call it from here with ng-click?--}}
             <td ng-click="showProjectPopup(project)" class="pointer">[[project.formatted_price]]</td>
+
             {{--<td>--}}
             {{--<span ng-if="!project.paid" class="label label-danger">unpaid</span>--}}
             {{--<span ng-if="project.paid" class="label label-success">paid</span>--}}

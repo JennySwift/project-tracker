@@ -33,3 +33,4 @@
 
 <script type="text/javascript" src="js/directives/AutocompleteDirective.js"></script>
 <script type="text/javascript" src="js/directives/MyAutocompleteDirective.js"></script>
+<script type="text/javascript" src="js/directives/PopupsDirective.js"></script>

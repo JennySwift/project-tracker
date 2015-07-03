@@ -20,7 +20,9 @@ var app = angular.module('projects');
             }
         };
         $scope.show = {
-            popups: {},
+            popups: {
+                project: false
+            },
             new_project: false
         };
         $scope.project_popup = {
@@ -386,35 +388,35 @@ var app = angular.module('projects');
             $scope.provideFeedback('something');
         };
 
-        $scope.showProjectPopup = function ($project) {
-            ProjectsFactory.showProject($project).then(function (response) {
-                $scope.selected.project = response.data;
-
-                //Check if the project has a timer going
-
-                var $timer_in_progress = $scope.isTimerGoing();
-                if ($timer_in_progress) {
-                    //Set the time of the timer in progress to what it should be
-                    var $start = moment($timer_in_progress.formatted_start, 'DD/MM/YY HH:mm:ss');
-                    var $now = moment();
-                    var $time = $now.diff($start, 'seconds');
-                    var $hours = Math.floor($time / 3600);
-                    $time = $time - ($hours * 3600);
-                    var $minutes = Math.floor($time / 60);
-                    $time = $time - ($minutes * 60);
-                    var $seconds = $time;
-
-                    $scope.project_popup.timer.time.hours = $hours;
-                    $scope.project_popup.timer.time.minutes = $minutes;
-                    $scope.project_popup.timer.time.seconds = $seconds;
-
-                    //Resume the timer
-                    $scope.countUp();
-                }
-
-                $scope.show.popups.project = true;
-            });
-        };
+        //$scope.showProjectPopup = function ($project) {
+        //    ProjectsFactory.showProject($project).then(function (response) {
+        //        $scope.selected.project = response.data;
+        //
+        //        //Check if the project has a timer going
+        //
+        //        var $timer_in_progress = $scope.isTimerGoing();
+        //        if ($timer_in_progress) {
+        //            //Set the time of the timer in progress to what it should be
+        //            var $start = moment($timer_in_progress.formatted_start, 'DD/MM/YY HH:mm:ss');
+        //            var $now = moment();
+        //            var $time = $now.diff($start, 'seconds');
+        //            var $hours = Math.floor($time / 3600);
+        //            $time = $time - ($hours * 3600);
+        //            var $minutes = Math.floor($time / 60);
+        //            $time = $time - ($minutes * 60);
+        //            var $seconds = $time;
+        //
+        //            $scope.project_popup.timer.time.hours = $hours;
+        //            $scope.project_popup.timer.time.minutes = $minutes;
+        //            $scope.project_popup.timer.time.seconds = $seconds;
+        //
+        //            //Resume the timer
+        //            $scope.countUp();
+        //        }
+        //
+        //        $scope.show.popups.project = true;
+        //    });
+        //};
 
         $scope.isTimerGoing = function () {
             return _.findWhere($scope.selected.project.timers, {finish: null});
