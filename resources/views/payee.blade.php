@@ -57,13 +57,28 @@
         show="show.popups.project">
     </popup>
 
-    <button ng-click="toggleNewProjectView()" id="toggle-new-project-btn" class="btn">New project</button>
+    <button
+        ng-click="toggleNewProjectView()"
+        id="toggle-new-project-btn"
+        class="btn">
+        New project
+    </button>
 
     <div ng-show="show.new_project" class="transition margin-bottom new-project-container">
 
         <div class="btn-switch">
-            <div ng-class="{'selected': new_project.view === 'previous_payer'}" ng-click="changeNewProjectView('previous')">previous payer</div>
-            <div ng-class="{'selected': new_project.view === 'new_payer'}" ng-click="changeNewProjectView('new')">new payer</div>
+
+            <div
+                ng-class="{'selected': new_project.view === 'previous_payer'}"
+                ng-click="changeNewProjectView('previous')">
+                previous payer
+            </div>
+
+            <div
+                ng-class="{'selected': new_project.view === 'new_payer'}"
+                ng-click="changeNewProjectView('new')">
+                new payer
+            </div>
         </div>
 
         <div class="input-container">
@@ -118,17 +133,22 @@
                 </tr>
 
                 <tr ng-repeat="payer in payers">
-                    <td><img ng-src="[[payer.gravatar]]" class="gravatar"></td>
+                    <td>
+                        <img ng-src="[[payer.gravatar]]" class="gravatar">
+                    </td>
                     <td>[[payer.name]]</td>
                     <td>[[payer.formatted_owed_to_user]]</td>
-                    <td><button ng-click="markAsPaid(payer)" class="btn btn-xs">paid</button></td>
-                    <td><button ng-click="removePayer(payer)" class="btn btn-xs btn-danger">delete</button></td>
+                    <td>
+                        <button ng-click="markAsPaid(payer)" class="btn btn-xs">paid</button>
+                    </td>
+                    <td>
+                        <button ng-click="removePayer(payer)" class="btn btn-xs btn-danger">delete</button>
+                    </td>
                 </tr>
             </table>
         </div>
 
     </div>
-
 
     <h1>Projects</h1>
 
@@ -139,7 +159,6 @@
             <th>Rate/hour</th>
             <th>Time</th>
             <th>$</th>
-            {{--<th>Paid</th>--}}
             <th></th>
         </tr>
         <tr ng-repeat="project in projects">
@@ -156,10 +175,6 @@
             so how do I call it from here with ng-click?--}}
             <td ng-click="showProjectPopup(project)" class="pointer">[[project.formatted_price]]</td>
 
-            {{--<td>--}}
-            {{--<span ng-if="!project.paid" class="label label-danger">unpaid</span>--}}
-            {{--<span ng-if="project.paid" class="label label-success">paid</span>--}}
-            {{--</td>--}}
             <td>
                 <button ng-click="deleteProject(project)" class="btn btn-xs btn-danger">delete</button>
             </td>

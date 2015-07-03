@@ -161,18 +161,26 @@ var app = angular.module('projects');
          */
 
         $scope.insertProject = function () {
-            ProjectsFactory.insertProject($scope.new_project.email, $scope.new_project.description, $scope.new_project.rate).then(function (response) {
-                //$scope.projects = response.data;
-            });
+            ProjectsFactory.insertProject($scope.new_project.email, $scope.new_project.description, $scope.new_project.rate)
+                .then(function (response) {
+                    //$scope.projects = response.data;
+                })
+                .catch(function (response) {
+                    console.log('error');
+                });
         };
 
         $scope.addPayer = function ($keycode) {
             if ($keycode !== 13) {
                 return false;
             }
-            ProjectsFactory.addPayer().then(function (response) {
-                $scope.payers = response.data;
-            });
+            ProjectsFactory.addPayer()
+                .then(function (response) {
+                    $scope.payers = response.data;
+                })
+                .catch(function (response) {
+                    console.log('error');
+                });
         };
 
         /**
@@ -180,18 +188,26 @@ var app = angular.module('projects');
          */
 
         $scope.confirmNewProject = function ($project) {
-            ProjectsFactory.confirmNewProject($project).then(function (response) {
-                $scope.projects.push(response.data);
-                $scope.provideFeedback('You have confirmed the project!');
-                $scope.project_requests = _.without($scope.project_requests, $project);
-            });
+            ProjectsFactory.confirmNewProject($project)
+                .then(function (response) {
+                    $scope.projects.push(response.data);
+                    $scope.provideFeedback('You have confirmed the project!');
+                    $scope.project_requests = _.without($scope.project_requests, $project);
+                })
+                .catch(function (response) {
+                    console.log('error');
+                });
         };
 
         $scope.declineNewProject = function ($project) {
-            ProjectsFactory.declineNewProject($project).then(function (response) {
-                $scope.provideFeedback('You have declined the project!');
-                $scope.project_requests = _.without($scope.project_requests, $project);
-            });
+            ProjectsFactory.declineNewProject($project)
+                .then(function (response) {
+                    $scope.provideFeedback('You have declined the project!');
+                    $scope.project_requests = _.without($scope.project_requests, $project);
+                })
+                .catch(function (response) {
+                    console.log('error');
+                });
         };
 
         /**
@@ -227,33 +243,37 @@ var app = angular.module('projects');
          */
 
         $scope.showProjectPopup = function ($project) {
-            ProjectsFactory.showProject($project).then(function (response) {
-                $scope.selected.project = response.data;
+            ProjectsFactory.showProject($project)
+                .then(function (response) {
+                    $scope.selected.project = response.data;
 
-                //Check if the project has a timer going
+                    //Check if the project has a timer going
 
-                var $timer_in_progress = $scope.isTimerGoing();
-                if ($timer_in_progress) {
-                    //Set the time of the timer in progress to what it should be
-                    var $start = moment($timer_in_progress.formatted_start, 'DD/MM/YY HH:mm:ss');
-                    var $now = moment();
-                    var $time = $now.diff($start, 'seconds');
-                    var $hours = Math.floor($time / 3600);
-                    $time = $time - ($hours * 3600);
-                    var $minutes = Math.floor($time / 60);
-                    $time = $time - ($minutes * 60);
-                    var $seconds = $time;
+                    var $timer_in_progress = $scope.isTimerGoing();
+                    if ($timer_in_progress) {
+                        //Set the time of the timer in progress to what it should be
+                        var $start = moment($timer_in_progress.formatted_start, 'DD/MM/YY HH:mm:ss');
+                        var $now = moment();
+                        var $time = $now.diff($start, 'seconds');
+                        var $hours = Math.floor($time / 3600);
+                        $time = $time - ($hours * 3600);
+                        var $minutes = Math.floor($time / 60);
+                        $time = $time - ($minutes * 60);
+                        var $seconds = $time;
 
-                    $scope.project_popup.timer.time.hours = $hours;
-                    $scope.project_popup.timer.time.minutes = $minutes;
-                    $scope.project_popup.timer.time.seconds = $seconds;
+                        $scope.project_popup.timer.time.hours = $hours;
+                        $scope.project_popup.timer.time.minutes = $minutes;
+                        $scope.project_popup.timer.time.seconds = $seconds;
 
-                    //Resume the timer
-                    $scope.countUp();
-                }
+                        //Resume the timer
+                        $scope.countUp();
+                    }
 
-                $scope.show.popups.project = true;
-            });
+                    $scope.show.popups.project = true;
+                })
+                .catch(function (response) {
+                    console.log('error');
+                });
         };
 
         $scope.isTimerGoing = function () {

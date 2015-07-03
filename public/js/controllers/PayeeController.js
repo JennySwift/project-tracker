@@ -167,11 +167,15 @@ var app = angular.module('projects');
         };
 
         $scope.startProjectTimer = function () {
-            ProjectsFactory.startProjectTimer($scope.selected.project.id).then(function (response) {
-                $scope.resetTimer();
-                $scope.selected.project.timers.push(response.data);
-                $scope.countUp();
-            });
+            ProjectsFactory.startProjectTimer($scope.selected.project.id)
+                .then(function (response) {
+                    $scope.resetTimer();
+                    $scope.selected.project.timers.push(response.data);
+                    $scope.countUp();
+                })
+                .catch(function (response) {
+                    console.log('error');
+                });
         };
 
         $scope.countUp = function () {
@@ -214,22 +218,26 @@ var app = angular.module('projects');
          * On both main page and in the popup, update the project time and project price.
          */
         $scope.stopProjectTimer = function () {
-            ProjectsFactory.stopProjectTimer($scope.selected.project.id).then(function (response) {
-                //Find the timer in the JS array and update it
-                $scope.updateProjectPopupTimer(response.data);
+            ProjectsFactory.stopProjectTimer($scope.selected.project.id)
+                .then(function (response) {
+                    //Find the timer in the JS array and update it
+                    $scope.updateProjectPopupTimer(response.data);
 
-                //Update project in the popup
-                $scope.updateProjectPopup(response.data);
+                    //Update project in the popup
+                    $scope.updateProjectPopup(response.data);
 
-                //Update the project on the main page
-                $scope.updateProjectOnMainPage();
+                    //Update the project on the main page
+                    $scope.updateProjectOnMainPage();
 
-                //Update the amount owed
-                $scope.updateAmountOwed(response.data);
+                    //Update the amount owed
+                    $scope.updateAmountOwed(response.data);
 
-                //Stop the JS timer
-                $scope.stopJsTimer();
-            });
+                    //Stop the JS timer
+                    $scope.stopJsTimer();
+                })
+                .catch(function (response) {
+                    console.log('error');
+                });
         };
 
         $scope.updateProjectOnMainPage = function () {
@@ -292,16 +300,20 @@ var app = angular.module('projects');
          */
         $scope.markAsPaid = function ($payer) {
             if (confirm("Are you sure? " + $payer.name + " will no longer owe you any money.")) {
-                ProjectsFactory.markAsPaid($payer.id).then(function (response) {
-                    //Todo: Is there some better way of writing this, so I can just do something like
-                    //Todo: $payer.formatted_owed_to_user = "0.00"?
+                ProjectsFactory.markAsPaid($payer.id)
+                    .then(function (response) {
+                        //Todo: Is there some better way of writing this, so I can just do something like
+                        //Todo: $payer.formatted_owed_to_user = "0.00"?
 
-                    //Find the index of the payer
-                    var $index = _.indexOf($scope.payers, _.findWhere($scope.payers, {id: $payer.id}));
+                        //Find the index of the payer
+                        var $index = _.indexOf($scope.payers, _.findWhere($scope.payers, {id: $payer.id}));
 
-                    //Update the amount owed
-                    $scope.payers[$index].formatted_owed_to_user = "0.00";
-                });
+                        //Update the amount owed
+                        $scope.payers[$index].formatted_owed_to_user = "0.00";
+                    })
+                    .catch(function (response) {
+                        console.log('error');
+                    });
             }
         };
 
@@ -311,13 +323,17 @@ var app = angular.module('projects');
 
         $scope.removePayer = function ($payer) {
             if (confirm("Are you sure? This will delete all data associated with this payer.")) {
-                ProjectsFactory.removePayer($payer.id).then(function (response) {
-                    //Remove the payer from the payers
-                    $scope.payers = _.without($scope.payers, $payer);
-                    //Remove all the projects that were with the payer
-                    var $projects_with_payer = _.where($scope.projects, {payer_id: $payer.id});
-                    $scope.projects = _.difference($scope.projects, $projects_with_payer);
-                });
+                ProjectsFactory.removePayer($payer.id)
+                    .then(function (response) {
+                        //Remove the payer from the payers
+                        $scope.payers = _.without($scope.payers, $payer);
+                        //Remove all the projects that were with the payer
+                        var $projects_with_payer = _.where($scope.projects, {payer_id: $payer.id});
+                        $scope.projects = _.difference($scope.projects, $projects_with_payer);
+                    })
+                    .catch(function (response) {
+                        console.log('error');
+                    });
             }
         };
 
@@ -365,10 +381,14 @@ var app = angular.module('projects');
 
         $scope.deleteTimer = function ($timer) {
             if (confirm("Are you sure you want to delete this timer?")) {
-                ProjectsFactory.deleteTimer($timer).then(function (response) {
-                    $scope.selected.project.timers = _.without($scope.selected.project.timers, $timer);
-                    $scope.provideFeedback('Timer deleted.');
-                });
+                ProjectsFactory.deleteTimer($timer)
+                    .then(function (response) {
+                        $scope.selected.project.timers = _.without($scope.selected.project.timers, $timer);
+                        $scope.provideFeedback('Timer deleted.');
+                    })
+                    .catch(function (response) {
+                        console.log('error');
+                    });
             }
         };
 
@@ -389,33 +409,37 @@ var app = angular.module('projects');
         };
 
         //$scope.showProjectPopup = function ($project) {
-        //    ProjectsFactory.showProject($project).then(function (response) {
-        //        $scope.selected.project = response.data;
+        //    ProjectsFactory.showProject($project)
+        //        .then(function (response) {
+        //            $scope.selected.project = response.data;
         //
-        //        //Check if the project has a timer going
+        //            //Check if the project has a timer going
         //
-        //        var $timer_in_progress = $scope.isTimerGoing();
-        //        if ($timer_in_progress) {
-        //            //Set the time of the timer in progress to what it should be
-        //            var $start = moment($timer_in_progress.formatted_start, 'DD/MM/YY HH:mm:ss');
-        //            var $now = moment();
-        //            var $time = $now.diff($start, 'seconds');
-        //            var $hours = Math.floor($time / 3600);
-        //            $time = $time - ($hours * 3600);
-        //            var $minutes = Math.floor($time / 60);
-        //            $time = $time - ($minutes * 60);
-        //            var $seconds = $time;
+        //            var $timer_in_progress = $scope.isTimerGoing();
+        //            if ($timer_in_progress) {
+        //                //Set the time of the timer in progress to what it should be
+        //                var $start = moment($timer_in_progress.formatted_start, 'DD/MM/YY HH:mm:ss');
+        //                var $now = moment();
+        //                var $time = $now.diff($start, 'seconds');
+        //                var $hours = Math.floor($time / 3600);
+        //                $time = $time - ($hours * 3600);
+        //                var $minutes = Math.floor($time / 60);
+        //                $time = $time - ($minutes * 60);
+        //                var $seconds = $time;
         //
-        //            $scope.project_popup.timer.time.hours = $hours;
-        //            $scope.project_popup.timer.time.minutes = $minutes;
-        //            $scope.project_popup.timer.time.seconds = $seconds;
+        //                $scope.project_popup.timer.time.hours = $hours;
+        //                $scope.project_popup.timer.time.minutes = $minutes;
+        //                $scope.project_popup.timer.time.seconds = $seconds;
         //
-        //            //Resume the timer
-        //            $scope.countUp();
-        //        }
+        //                //Resume the timer
+        //                $scope.countUp();
+        //            }
         //
-        //        $scope.show.popups.project = true;
-        //    });
+        //            $scope.show.popups.project = true;
+        //        })
+        //        .catch(function (response) {
+        //            console.log('error');
+        //        });
         //};
 
         $scope.isTimerGoing = function () {
