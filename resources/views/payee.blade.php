@@ -68,25 +68,36 @@
 
         <div class="input-container">
 
-            <div ng-show="new_project.view === 'previous_payer'">
-                <autocomplete-Jenny
-                        placeholder="previous payer"
-                        url = "select/autocompletePayers"
-                        querydatabase = false
-                        payers = 'payers'
-                        callback = "provideFeedback('hi there!')"
-                        selecteditem = "new_project.previous_payer"
-                        width="300"/>
-            </div>
+            <autocomplete-Jenny
+                    ng-show="new_project.view === 'previous_payer'"
+                    placeholder="previous payer"
+                    url = "select/autocompletePayers"
+                    querydatabase = false
+                    payers = 'payers'
+                    callback = "provideFeedback('hi there!')"
+                    selecteditem = "new_project.previous_payer"
+                    width="300">
+            </autocomplete-Jenny>
 
-            <input ng-show="new_project.view === 'new_payer'" ng-model="new_project.new_payer.email" type="text" placeholder="new payer's email"/>
+            <input ng-show="new_project.view === 'new_payer'"
+                   ng-model="new_project.new_payer.email"
+                   ng-keyup="insertProject($event.keyCode)"
+                   type="text"
+                   placeholder="new payer's email">
 
             {{--<select ng-model="new_project.email" title="something">--}}
                 {{--<option ng-repeat="payer in payers" ng-value="payer.email">[[payer.name]]</option>--}}
             {{--</select>--}}
 
-            <input ng-model="new_project.description" type="text" placeholder="description">
-            <input ng-model="new_project.rate" ng-keyup="insertProject($event.keyCode)" type="text" placeholder="rate">
+            <input ng-model="new_project.description"
+                   ng-keyup="insertProject($event.keyCode)"
+                   type="text"
+                   placeholder="description">
+
+            <input ng-model="new_project.rate"
+                   ng-keyup="insertProject($event.keyCode)"
+                   type="text"
+                   placeholder="rate">
 
         </div>
 
