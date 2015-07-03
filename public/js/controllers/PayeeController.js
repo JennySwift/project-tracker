@@ -214,38 +214,68 @@ var app = angular.module('projects');
         $scope.stopProjectTimer = function () {
             ProjectsFactory.stopProjectTimer($scope.selected.project.id).then(function (response) {
                 //Find the timer in the JS array and update it
-                var $index = _.indexOf($scope.selected.project.timers, _.findWhere($scope.selected.project.timers, {id: response.data.id}));
-                $scope.selected.project.timers[$index].formatted_finish = response.data.finish;
-                $scope.selected.project.timers[$index].formatted_time = response.data.time;
-                $scope.selected.project.timers[$index].price = response.data.price;
+                $scope.updateProjectPopupTimer(response.data);
 
-                //Update the project price in the popup
-                $scope.selected.project.price = response.data.project.price;
+                //Update project in the popup
+                $scope.updateProjectPopup(response.data);
 
-                //Update the project time in the popup
-                $scope.selected.project.total_time_formatted = response.data.project.time;
-
-                //Find the project on the main page
-                //I suppose ideally the project time and price should somehow update
-                //on the main page automatically when it updates in the popup.
-                var $project = _.findWhere($scope.projects, {id: $scope.selected.project.id});
-                var $index = _.indexOf($scope.projects, $project);
-
-                //Update the project price on the main page
-                $scope.projects[$index].price = $scope.selected.project.price;
-
-                //Update the project time on the main page
-                $scope.projects[$index].total_time_formatted = $scope.selected.project.total_time_formatted;
-
-                //Find the payer
-                var $payer_index = _.indexOf($scope.payers, _.findWhere($scope.payers, {id: response.data.payer.id}));
+                //Update the project on the main page
+                $scope.updateProjectOnMainPage();
 
                 //Update the amount owed
-                $scope.payers[$payer_index].formatted_owed_to_user = response.data.payer.owed;
+                $scope.updateAmountOwed(response.data);
 
                 //Stop the JS timer
                 $scope.stopJsTimer();
             });
+        };
+
+        $scope.updateProjectOnMainPage = function () {
+            //Find the project on the main page
+            var $project = _.findWhere($scope.projects, {id: $scope.selected.project.id});
+            var $index = _.indexOf($scope.projects, $project);
+
+            //Update the project price on the main page
+            $scope.projects[$index].price = $scope.selected.project.price;
+
+            //Update the project time on the main page
+            $scope.projects[$index].total_time_formatted = $scope.selected.project.total_time_formatted;
+        };
+
+        /**
+         * For when timer is stopped,
+         * to update the project price and project time in the popup
+         * @param $data
+         */
+        $scope.updateProjectPopup = function ($data) {
+            //Update the project price in the popup
+            $scope.selected.project.price = $data.project.price;
+
+            //Update the project time in the popup
+            $scope.selected.project.total_time_formatted = $data.project.time;
+        };
+
+        /**
+         * Find the timer in the JS array and update it.
+         * For when the timer stops.
+         * @param $data
+         */
+        $scope.updateProjectPopupTimer = function ($data) {
+            var $index = _.indexOf($scope.selected.project.timers, _.findWhere($scope.selected.project.timers, {id: $data.id}));
+            $scope.selected.project.timers[$index].formatted_finish = $data.finish;
+            $scope.selected.project.timers[$index].formatted_time = $data.time;
+            $scope.selected.project.timers[$index].price = $data.price;
+        };
+
+        /**
+         * For when a timer stops. Update the amount owed with the JS.
+         * @param $data
+         */
+        $scope.updateAmountOwed = function ($data) {
+            //Find the payer
+            var $payer_index = _.indexOf($scope.payers, _.findWhere($scope.payers, {id: $data.payer.id}));
+            //Update the amount owed
+            $scope.payers[$payer_index].formatted_owed_to_user = $data.payer.owed;
         };
 
         $scope.stopJsTimer = function () {
