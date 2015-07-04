@@ -51,11 +51,11 @@
         {{--<button ng-click="addPayer(13)" class="btn btn-success">Add payer</button>--}}
     {{--</div>--}}
 
-    <popup
-        placeholder="previous payer"
-        width="300"
-        show="show.popups.project">
-    </popup>
+    {{--<popup--}}
+        {{--placeholder="previous payer"--}}
+        {{--width="300"--}}
+        {{--show="show.popups.project">--}}
+    {{--</popup>--}}
 
     <button
         ng-click="toggleNewProjectView()"
